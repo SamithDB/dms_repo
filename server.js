@@ -62,7 +62,7 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 require('./app/ch_routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 require('./app/ch_admin.js')(app, passport); 
 require('./app/ch_feeder.js')(app, passport);
-require('./app/dms.js')(app, passport);
+require('./app/dms_routes.js')(app, passport);
 require('./app/dms_admin.js')(app, passport);
 
 
