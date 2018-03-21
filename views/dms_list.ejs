@@ -53,6 +53,11 @@
         for(var j = 0;j < dmsfiles.length;j++) { 
         %>
           <label><%=dmsfiles[j].name%></label> </br>
+          <form action="/down" method="post">
+            <input type="hidden" name="fileid" value="<%=dmsfiles[j].id%>">
+            <input type="hidden" name="filename" value="<%=dmsfiles[j].name%>">
+            <input type="submit" value="Download">
+          </form>
         <% 
             }
           } 

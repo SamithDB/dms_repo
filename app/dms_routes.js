@@ -7,6 +7,10 @@
 	const fileUpload = require('express-fileupload');
 		
 	connection.query('USE ' + dbconfig.database);
+
+	var TOKEN_DIR = (process.env.HOME || process.env.HOMEPATH ||
+   		 	process.env.USERPROFILE) + '/.credentials/';
+	var TOKEN_PATH = TOKEN_DIR + 'drive-nodejs-quickstart.json';
 	
 	module.exports = function(app, passport) {
 
@@ -59,6 +63,12 @@
 
 		});
 
+
+		// --------------------------------------------------------------------------------
+		// --------------------------------------------------------------------------------
+		// --------------------------------------------------------------------------------
+		// --------------------------------------------------------------------------------
+
 		'use strict';
 
 		// [START main_body]
@@ -67,8 +77,9 @@
 		const opn = require('opn');
 		const path = require('path');
 		const fs = require('fs');
+		const os = require('os');
 
-		const scopes = ['https://www.googleapis.com/auth/drive.metadata.readonly'];
+		const scopes = ['https://www.googleapis.com/auth/drive'];
 
 		// Create an oAuth2 client to authorize the API call
 		const client = new google.auth.OAuth2(
@@ -91,27 +102,76 @@
 		
 		});
 
+		app.get('/refresh', (req, res) => {
+
+			// Generate the url that will be used for authorization
+			this.authorizeUrl = client.generateAuthUrl({
+			  grant_type: 'refresh_token',
+			  refresh_token: 'YOUR_REFRESH_TOKEN',
+			  scope: scopes
+			});
+		
+			opn(this.authorizeUrl, { wait: false });
+		
+		});
+
 		// /oauth2callback?code=<code>
 		// Open an http server to accept the oauth callback. In this
 		// simple example, the only request to our webserver is to
 
 		app.get('/dmscode', (req, res) => {
 
-			const code = req.query.code;
-		  	console.log("code----------"+code);
+			// Check if we have previously stored a token.
+				fs.readFile(TOKEN_PATH, function(err, token) {
+				if (err) {
 
-		  	client.getToken(code, (err, tokens) => {
-			if (err) {
-			  console.error('Error getting oAuth tokens:');
-			  throw err;
-			}else{
-				req.session.dmstoken = tokens ;
-				res.redirect('/dmshome');
+				//getNewToken(client, callback);
+				const code = req.query.code;
+		  		console.log("code----------"+code);
+
+		  		client.getToken(code, (err, tokens) => {
+				if (err) {
+			  	console.error('Error getting oAuth tokens:');
+			  	throw err;
+				}else{
+
+				storeToken(tokens);
+				console.log("Saved-------------- "+tokens);
+				//req.session.dmstoken = tokens ;
+
+				//var savetoken = new Object();
+				//savetoken.tokens = tokens;
+				//console.log("----------------"+tokens);
+
+				
+
+				//var insertQuery = "INSERT INTO dmstoken (dmstoken.token) values ('" + savetoken.tokens + "')";
+				//connection.query(insertQuery,function(err, rows) {
+				//if (err){
+				//	console.log(err);
+				//	res.redirect('/home');
+				//}else{
+				//	res.redirect('/dmshome');
+				//}
+				//});
+				
 			}
 		  	
 		  	});
+
+
+				} else {
+				      client.credentials = JSON.parse(token);
+				      //callback(client);
+				       console.log("----------------token found---------------------");
+				      console.log(client.credentials);
+				      res.redirect('/dmshome');
+				}
+			});
+
+			
 		});
-		
+
 
 		// ====================================
 		// DMS List Files =====================
@@ -119,11 +179,11 @@
 		
 		app.get('/listfiles', function(req, res1){
 
-			console.log("tokens----------"+req.session.dmstoken);
-			
-		  	var tokens = req.session.dmstoken;
+			fs.readFile(TOKEN_PATH, function(err, tokens) {
+
+			console.log("tokens----------"+tokens);
 		  	
-			client.credentials = tokens;
+			//client.credentials = tokens;
 			//res.send('Authentication successful! Please return to the console.');
 			
 			
@@ -190,10 +250,58 @@
 			}
 
 		  });
-		  
+
+		  });
 			
 		});
+
+		// ====================================
+		// DMS List Files =====================
+		// ====================================
+		
+		app.post('/down', function(req, res){
+
+			const fileId = req.body.fileid;
+		  	const dest = fs.createWriteStream(`/Users/public/`+req.body.filename);
+
+		  	const drive = google.drive({
+			 version: 'v3',
+			  auth: client
+			});
+
+		  	drive.files.get(
+		    {fileId, alt: 'media'},
+		    {responseType: 'stream'},
+		    (err, res) => {
+		      if (err) {
+		        console.error(err);
+		        throw err;
+		      }
+		      res.data.on('end', () => {
+		        console.log('Done downloading file.');
+		        //callback();
+		      })
+		        .on('error', err => {
+		          console.error('Error downloading file.');
+		          throw err;
+		        })
+		        .pipe(dest);
+		    });
+
+		});
 	
+	}
+
+	function storeToken(token) {
+				try {
+				    fs.mkdirSync(TOKEN_DIR);
+				  } catch (err) {
+				    if (err.code != 'EEXIST') {
+				      throw err;
+				    }
+				  }
+				  fs.writeFile(TOKEN_PATH, JSON.stringify(token));
+				  console.log('Token stored to ' + TOKEN_PATH);
 	}
 
 	// route middleware to make sure
