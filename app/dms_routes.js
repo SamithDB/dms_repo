@@ -191,7 +191,7 @@
 			service.files.list({
 			auth: client,
 			pageSize: 100,
-			fields: 'nextPageToken, files(id, name)'
+			fields: 'nextPageToken, files(id, name, webContentLink)'
 		  	}, (err, res) => {
 			if (err) {
 			  console.error('The API returned an error.');
@@ -204,7 +204,8 @@
 				
 			  console.log('Files Found!');
 			  for (const file of files) {
-				console.log(`${file.name} (${file.id})`);
+				console.log(`${file.name} (${file.webContentLink})`);
+
 			  }  
 
 			connection.query("SELECT * FROM employee WHERE login_idlogin = ? ",[req.user.idlogin], function(err1, rows) {
@@ -256,7 +257,7 @@
 		});
 
 		// ====================================
-		// DMS List Files =====================
+		// DMS Download Files =====================
 		// ====================================
 		
 		app.post('/down', function(req, res){
@@ -289,6 +290,36 @@
 		    });
 
 		});
+
+		// ====================================
+		// DMS View Files =====================
+		// ====================================
+		
+		app.post('/view', function(req, res){
+
+			const fileId = req.body.fileid;
+
+		  	const drive = google.drive({
+			 version: 'v3',
+			  auth: client
+			});
+		  	console.log(fileId);
+
+		  	drive.files.get(
+		    {fileId, alt: 'media'},
+		    {fields:"webContentLink"},
+		    (err, res) => {
+		      if (err) {
+		        console.error(err);
+		        throw err;
+		      }else{
+		      	console.log(webContentLink);
+		      }
+		     
+		    });
+
+		});
+
 	
 	}
 
