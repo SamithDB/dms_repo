@@ -160,10 +160,7 @@
                                     <td></td>
 
                                     <td>
-                                      <form action="/view" method="post">
-                                      <input type="hidden" name="fileid" value="<%=dmsfiles[j].id%>">
-                                      <input type="submit" value="View">
-                                      </form>
+                                      <a href="<%=dmsfiles[j].webViewLink%>" target="_blank">View file</a>
                                     </td>
                                     
                                     <td>
@@ -186,27 +183,10 @@
                         </table>
                     </div>
 
-
-      -------------------------------------------------------------------------------
-		
-		  <% 
-        if(dmsfiles.length){ 
-        for(var j = 0;j < dmsfiles.length;j++) { 
-        %>
-          <label><%=dmsfiles[j].name%></label> </br>
-          <form action="/down" method="post">
-            <input type="hidden" name="fileid" value="<%=dmsfiles[j].id%>">
-            <input type="hidden" name="filename" value="<%=dmsfiles[j].name%>">
-            <input type="submit" value="Download">
-          </form>
-        <% 
-            }
-          } 
-      %>
-
 		</div>
 		
 	</div>
+
 </div>
 	
 

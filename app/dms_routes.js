@@ -191,7 +191,7 @@
 			service.files.list({
 			auth: client,
 			pageSize: 100,
-			fields: 'nextPageToken, files(id, name, webContentLink)'
+			fields: 'nextPageToken, files(id, name, webContentLink, webViewLink)'
 		  	}, (err, res) => {
 			if (err) {
 			  console.error('The API returned an error.');
@@ -204,7 +204,7 @@
 				
 			  console.log('Files Found!');
 			  for (const file of files) {
-				console.log(`${file.name} (${file.webContentLink})`);
+				console.log(`${file.name} (${file.id})`);
 
 			  }  
 
