@@ -170,6 +170,7 @@
             <ul class="nav nav-tabs">
               <li class="active"><a href="#activity" data-toggle="tab">Details</a></li>
               <li><a href="#timeline" data-toggle="tab">Edit Details</a></li>
+              <li><a href="#pass" data-toggle="tab">Security</a></li>
             </ul>
             <div class="tab-content">
               <div class="active tab-pane" id="activity">
@@ -287,9 +288,29 @@
                                   </div>
                           
                        </form>
-				</div>
+				          </div>
               </div>
               <!-- /.tab-pane -->
+              <div class="tab-pane" id="pass">
+                <!-- The timeline -->
+                    <div>
+                        Changing Password For
+                        <label for="exampleInputEmail1"><%= user.fname %> <%= user.lname %> </label>
+                        Account :
+                        <hr/>
+                        <form action="/Changepass" role="form"  method="post">
+                          <div class="form-group">
+                             <input class="form-control" placeholder="New Password" type="password" name="password">     
+                          </div>
+                          <div class="form-group">
+                             <input class="form-control" placeholder="Confirm New Password" type="password" name="password2">     
+                          </div>
+                          <div class="form-group">
+                             <button class="cg kr">Change</button>     
+                          </div>
+                        </form>
+                  </div>
+              </div>
 
               <!-- enter the user input data using a button -->
 

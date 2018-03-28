@@ -125,7 +125,7 @@ module.exports = function(app, passport) {
 			newusr.empid = req.body.empid;
 			newusr.usrid = req.body.usrid;
 			newusr.level = req.body.level;
-			newusr.status = "B";
+			newusr.status = "C";
 
 
 			var insertQuery = "UPDATE login SET login.level = ?, login.status = ? WHERE login.idlogin = ?";

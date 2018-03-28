@@ -163,7 +163,29 @@ module.exports = function(passport) {
 
                 if (user) {
 
-                    return done(null, user[0]);
+                    if(user[0].status == "B"){
+
+                        return done(null, user[0]);
+
+                    }else if(user[0].status == "C"){
+
+                        var newusr = new Object();
+                        newusr.usrid = user[0].idlogin;
+                        newusr.status = "B";
+
+
+                        var insertQuery = "UPDATE login SET login.status = ? WHERE login.idlogin = ?";
+                        connection.query(insertQuery,[ newusr.status, newusr.usrid ],function(err, rows) {
+                            if (err) 
+                                console.log(err);
+
+                            return done(null, user[0]);
+                            
+                        })
+                        
+                    }
+
+                        
 
                 } else {
                     

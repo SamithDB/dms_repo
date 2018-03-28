@@ -30,7 +30,7 @@
 				        			console.log(err3);
 
 				        			var query = connection.query('SELECT * FROM login',function(err4,usrlist){
-				        			if(err3)
+				        			if(err4)
 				        				console.log(err4);
 
 				        			var query = connection.query('SELECT * FROM department',function(err4,deplist){
@@ -41,14 +41,25 @@
 				        			if(err5)
 				        				console.log(err5);
 
-				        				res.render('dms_home.ejs', {
-										employeelist : rowlist,
-										user : rows[0],		//  pass to template
-										allusrs : usrlist,
-										department : deplist,
-										store : storelist,
-										level : req.user.level
-										});
+				        			var query = connection.query('SELECT * FROM dmslevel WHERE login_idlogin = ? ',[req.user.idlogin],function(err6,dmslevel){
+				        			if(err6)
+				        				console.log(err6);
+
+				        				if(dmslevel[0].status == 'B'){
+				        					res.render('dms_home.ejs', {
+											employeelist : rowlist,
+											user : rows[0],		//  pass to template
+											allusrs : usrlist,
+											department : deplist,
+											store : storelist,
+											level : req.user.level,
+											dmslevel : dmslevel[0]
+											});
+				        				}else{
+				        					res.redirect('/home');
+				        				}
+
+				        		});
 
 				        	});
 				        				
@@ -137,23 +148,6 @@
 
 				storeToken(tokens);
 				console.log("Saved-------------- "+tokens);
-				//req.session.dmstoken = tokens ;
-
-				//var savetoken = new Object();
-				//savetoken.tokens = tokens;
-				//console.log("----------------"+tokens);
-
-				
-
-				//var insertQuery = "INSERT INTO dmstoken (dmstoken.token) values ('" + savetoken.tokens + "')";
-				//connection.query(insertQuery,function(err, rows) {
-				//if (err){
-				//	console.log(err);
-				//	res.redirect('/home');
-				//}else{
-				//	res.redirect('/dmshome');
-				//}
-				//});
 				
 			}
 		  	
@@ -228,6 +222,10 @@
 				        			if(err5)
 				        				console.log(err5);
 
+				        				var query = connection.query('SELECT * FROM dmslevel WHERE login_idlogin = ? ',[req.user.idlogin],function(err6,dmslevel){
+					        			if(err6)
+					        				console.log(err6);
+
 				        				res1.render('dms_list.ejs', {
 										employeelist : rowlist,
 										user : rows[0],		//  pass to template
@@ -235,8 +233,11 @@
 										department : deplist,
 										store : storelist,
 										level : req.user.level,
+										dmslevel : dmslevel[0],
 										dmsfiles : files
 										});
+
+									});
 
 				        		});
 				        				

@@ -6,7 +6,8 @@
 	var cookieParser = require('cookie-parser');
 	const fileUpload = require('express-fileupload');
 	var math = require('mathjs');
-		
+	var bcrypt = require('bcrypt-nodejs');
+
 	connection.query('USE ' + dbconfig.database);
 
 
@@ -75,7 +76,7 @@
 
 		connection.query("SELECT * FROM employee WHERE login_idlogin = ?",[req.user.idlogin], function(err, rows) {
                     if (err)
-                         console.log(err);;
+                         console.log(err);
 
                     res.render('profile.ejs', {
 						user : rows[0], //  pass to template
@@ -191,6 +192,61 @@
 				}
 			})
 		
+
+	});
+
+	// =====================================
+	// =====================================
+	// Change Password
+
+	app.post('/changepass', function(req, res, next) {
+		if(req.body.password == req.body.password2){
+		
+			connection.query('UPDATE login SET password = ?  WHERE idlogin = ?',[bcrypt.hashSync(req.body.password, null, null), req.user.idlogin], function(err, result) {
+				if (err) {
+					console.log(err);
+					connection.query("SELECT * FROM employee WHERE login_idlogin = ?",[req.user.idlogin], function(err, rows) {
+                    if (err)
+                         console.log(err);;
+
+                    res.render('profile.ejs', {
+						user : rows[0], //  pass to template
+						message: "upfail",
+						level : req.user.level
+					});
+
+        			});
+					
+				} else {
+					connection.query("SELECT * FROM employee WHERE login_idlogin = ?",[req.user.idlogin], function(err, rows) {
+                    if (err)
+                         console.log(err);;
+
+                    res.render('profile.ejs', {
+						user : rows[0], //  pass to template
+						message: "Updated",
+						level : req.user.level
+					});
+
+        			});
+					
+				}
+			})
+
+		}else{
+					connection.query("SELECT * FROM employee WHERE login_idlogin = ?",[req.user.idlogin], function(err, rows) {
+                    if (err)
+                         console.log(err);;
+
+                    res.render('profile.ejs', {
+						user : rows[0], //  pass to template
+						message: "upfail",
+						level : req.user.level
+					});
+
+        			});
+
+		}
 
 	});
 

@@ -54,6 +54,10 @@ module.exports = function(app, passport) {
 										level: req.user.level
 										});
 
+				        			}else if(req.user.status=="C"){
+
+				        				res.render('login.ejs', { message:"Login with Google to verify your Email" });
+
 				        			}else{
 
 				        				res.render('login.ejs', { message:"Not approved your account yet! Please contact your admin. " });

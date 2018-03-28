@@ -34,6 +34,7 @@ app.use('/pics', express.static(__dirname + '/propics'));
 app.use('/productpics', express.static(__dirname + '/products'));
 app.use('/promos', express.static(__dirname + '/promos'));
 app.use('/public', express.static(__dirname + '/public')); 
+app.use('/.credentials', express.static(__dirname + '/.credentials')); 
 
 // set up our express application
 app.use(morgan('dev')); // log every request to the console
