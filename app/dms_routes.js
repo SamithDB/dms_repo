@@ -321,8 +321,104 @@
 
 		});
 
+		// ====================================
+		// DMS Uploader ===========================
+		// ====================================
+
+		app.get('/dmsup', function(req, res) {
+		
+
+		connection.query("SELECT * FROM employee WHERE login_idlogin = ? ",[req.user.idlogin], function(err1, rows) {
+                    if (err1)
+                         console.log(err1);
+
+			        			var query = connection.query('SELECT * FROM employee',function(err3,rowlist){
+				        		if(err3)
+				        			console.log(err3);
+
+				        			var query = connection.query('SELECT * FROM login',function(err4,usrlist){
+				        			if(err4)
+				        				console.log(err4);
+
+				        			var query = connection.query('SELECT * FROM department',function(err4,deplist){
+				        			if(err4)
+				        				console.log(err4);
+
+				        			var query = connection.query('SELECT * FROM store',function(err5,storelist){
+				        			if(err5)
+				        				console.log(err5);
+
+				        			var query = connection.query('SELECT * FROM dmslevel WHERE login_idlogin = ? ',[req.user.idlogin],function(err6,dmslevel){
+				        			if(err6)
+				        				console.log(err6);
+
+				        					res.render('dms_uploader.ejs', {
+											employeelist : rowlist,
+											user : rows[0],		//  pass to template
+											allusrs : usrlist,
+											department : deplist,
+											store : storelist,
+											level : req.user.level,
+											dmslevel : dmslevel[0]
+											});
+
+				        		});
+
+				        	});
+				        				
+				        });
+
+			        });
+				        			
+			    });
+                   
+        	});
+
+
+		});
+
+		// ====================================
+		// Upload Files =====================
+		// ====================================
+		
+		app.post('/up', function(req, res){
+
+			if (!req.files)
+		    	res.redirect('/dmsup');
+
+		    //console.log(req.files);
+
+			var fileMetadata = {
+			  'name': 'photo.jpg'
+			};
+			var media = {
+			  mimeType: 'image/jpeg',
+			  body: fs.createReadStream('files/photo.jpg')
+			};
+			const drive = google.drive({
+			 version: 'v3',
+			  auth: client
+			});
+
+			drive.files.create({
+			  resource: fileMetadata,
+			  media: media,
+			  fields: 'id'
+			}, function (err, file) {
+			  if (err) {
+			    // Handle error
+			    console.error(err);
+			  } else {
+			    console.log('File Id: ', file.uploadid);
+			  }
+			});
+
+		});
+
+
 	
 	}
+
 
 	function storeToken(token) {
 				try {
