@@ -33,6 +33,7 @@
   function showFileName() {
      var fil = document.getElementById("myFile");
      alert(fil.value);
+     
   }
   </script>
 
@@ -91,7 +92,8 @@
             <form ref='uploadForm' 
                   id='uploadForm' 
                   action='/up' 
-                  method='post' >
+                  method='post' 
+                  encType="multipart/form-data">
               <input type="file" name="sampleFile" />
               <br/>
               <input type='submit' value='Upload!' />

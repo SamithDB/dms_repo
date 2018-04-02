@@ -185,7 +185,7 @@
 			service.files.list({
 			auth: client,
 			pageSize: 100,
-			fields: 'nextPageToken, files(id, name, webContentLink, webViewLink)'
+			fields: 'nextPageToken, files(id, name, webContentLink, webViewLink, mimeType)'
 		  	}, (err, res) => {
 			if (err) {
 			  console.error('The API returned an error.');
@@ -381,19 +381,22 @@
 		// Upload Files =====================
 		// ====================================
 		
+
+		//var FileReader = require('filereader');
+		//var reader = new FileReader();
+
 		app.post('/up', function(req, res){
 
 			if (!req.files)
 		    	res.redirect('/dmsup');
 
-		    //console.log(req.files);
 
-			var fileMetadata = {
+		    var fileMetadata = {
 			  'name': 'photo.jpg'
 			};
 			var media = {
 			  mimeType: 'image/jpeg',
-			  body: fs.createReadStream('files/photo.jpg')
+			  body: fs.readFile(res.files.value)
 			};
 			const drive = google.drive({
 			 version: 'v3',
@@ -412,6 +415,41 @@
 			    console.log('File Id: ', file.uploadid);
 			  }
 			});
+		
+
+		});
+
+		// ==================================
+		// Create Folders ===================
+		// ==================================
+
+		app.get('/folderstructure', function(req, res){
+
+		var folderId = '1tkALk2iGiaN14zIzEWg4RX2VxRirw1Hc';
+		var fileMetadata = {
+		'name': 'Invoices2',
+		parents: [folderId],
+		'mimeType': 'application/vnd.google-apps.folder'
+		
+		};
+
+		const drive = google.drive({
+			 version: 'v3',
+			  auth: client
+			});
+
+		drive.files.create({
+		  resource: fileMetadata,
+		  fields: 'id'
+		}, function (err, file) {
+		  if (err) {
+		    // Handle error
+		    console.error(err);
+		  } else {
+		    console.log('Folder Id: ', file.id);
+		  }
+		});
+		
 
 		});
 
