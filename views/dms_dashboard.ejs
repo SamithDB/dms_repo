@@ -204,6 +204,61 @@
                   </table>
                 </div>
 
+
+
+                <div>
+                  <h3>Department Folders</h3>
+                  <table class="table table-hover">
+                    <thead>
+                    <tr>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% 
+                      if(dmsfiles.length){ 
+                      for(var i = 0;i < dmsfiles.length;i++) { 
+                        if(dmsfiles[i].mimeType == "application/vnd.google-apps.folder"){
+                        if(dmsfiles[i].parents == "0AGooUImGX-6oUk9PVA"){
+                    %>
+                    <tr>
+                      <% 
+                        %> 
+                        <td><%=dmsfiles[i].name%></td>
+                        <td>Folder</td>
+                        <td><%=dmsfiles[i].parents%></td> 
+                        <%  
+                      %>
+                    </tr>
+                    <%
+                           }
+                          }
+                        }
+                      }
+                    %>
+                  <tbody>
+                  </table>
+
+                  <hr/>
+
+                  <div>
+                    <form class="form-inline" action="/depfolder" method="post">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="input-group-addon">Dep Folder</div>
+                        <input type="text" class="form-control" id="exampleInputAmount" placeholder="Name" name="foldername">
+                        <div class="input-group-addon"><label style="color:red">Use exact name of the department</label></div>
+                      </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create</button>
+                  </form>
+                  </div>
+
+                  <hr/>
+                </div>
+
                
               </div>
               <!-- /.tab-pane -->

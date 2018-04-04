@@ -9,69 +9,18 @@
 		
 	connection.query('USE ' + dbconfig.database);
 
+	
+		const google = require('googleapis');
+		const express = require('express');
+		const opn = require('opn');
+		const path = require('path');
+		const fs = require('fs');
+		const os = require('os');
+
 
 module.exports = function(app, passport) {
 
-	// =====================================
-	// Dashboard ===========================
-	// =====================================
-
-	app.get('/dmsdash', function(req, res) {
-		
-
-		connection.query("SELECT * FROM employee WHERE login_idlogin = ? ",[req.user.idlogin], function(err1, rows) {
-                    if (err1)
-                         console.log(err1);
-
-			        			var query = connection.query('SELECT * FROM employee',function(err3,rowlist){
-				        		if(err3)
-				        			console.log(err3);
-
-				        			var query = connection.query('SELECT * FROM login',function(err4,usrlist){
-				        			if(err3)
-				        				console.log(err4);
-
-				        			var query = connection.query('SELECT * FROM department',function(err4,deplist){
-				        			if(err4)
-				        				console.log(err4);
-
-				        			var query = connection.query('SELECT * FROM store',function(err5,storelist){
-				        			if(err5)
-				        				console.log(err5);
-
-				        			var query = connection.query('SELECT * FROM dmslevel',function(err5,dmslevellist){
-				        			if(err5)
-				        				console.log(err5);
-
-				        			if(req.user.level=="admin"){
-				        				res.render('dms_dashboard.ejs', {
-										employeelist : rowlist,
-										user : rows[0],		//  pass to template
-										allusrs : usrlist,
-										department : deplist,
-										store : storelist,
-										level : req.user.level,
-										dmslevel : dmslevellist
-										});
-				        			}else{
-				        				res.redirect('/dmshome');
-				        			}
-
-				        			});
-
-				        			});
-				        				
-				        			});
-
-			        			  	});
-				        			
-			        			});
-                   
-        	});
-
-
-	});
-
+	
 	
 
 	// =====================================

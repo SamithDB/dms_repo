@@ -110,6 +110,8 @@
 			});
 		
 			opn(this.authorizeUrl, { wait: false });
+
+			res.redirect('/home');
 		
 		});
 
@@ -184,8 +186,7 @@
 			const service = google.drive('v3');
 			service.files.list({
 			auth: client,
-			pageSize: 100,
-			fields: 'nextPageToken, files(id, name, webContentLink, webViewLink, mimeType)'
+			fields: 'nextPageToken, files(id, name, webContentLink, webViewLink, mimeType, parents)'
 		  	}, (err, res) => {
 			if (err) {
 			  console.error('The API returned an error.');
@@ -256,6 +257,163 @@
 		  });
 			
 		});
+
+	// =====================================
+	// Dashboard for DMS====================
+	// =====================================
+
+	app.get('/dmsdash', function(req, res1) {
+
+		const service = google.drive('v3');
+			service.files.list({
+			auth: client,
+			parents: "root",
+			fields: 'nextPageToken, files(id, name, webContentLink, webViewLink, mimeType, parents)'
+		  	}, (err, res) => {
+			if (err) {
+			  console.error('The API returned an error.');
+			  throw err;
+			}
+			const files = res.data.files;
+			if (files.length === 0) {
+			  console.log('No files found.');
+			} else { 
+		
+
+			connection.query("SELECT * FROM employee WHERE login_idlogin = ? ",[req.user.idlogin], function(err1, rows) {
+                    if (err1)
+                         console.log(err1);
+
+			        			var query = connection.query('SELECT * FROM employee',function(err3,rowlist){
+				        		if(err3)
+				        			console.log(err3);
+
+				        			var query = connection.query('SELECT * FROM login',function(err4,usrlist){
+				        			if(err3)
+				        				console.log(err4);
+
+				        			var query = connection.query('SELECT * FROM department',function(err4,deplist){
+				        			if(err4)
+				        				console.log(err4);
+
+				        			var query = connection.query('SELECT * FROM store',function(err5,storelist){
+				        			if(err5)
+				        				console.log(err5);
+
+				        			var query = connection.query('SELECT * FROM dmslevel',function(err5,dmslevellist){
+				        			if(err5)
+				        				console.log(err5);
+
+				        			if(req.user.level=="admin"){
+				        				res1.render('dms_dashboard.ejs', {
+										employeelist : rowlist,
+										user : rows[0],		//  pass to template
+										allusrs : usrlist,
+										department : deplist,
+										store : storelist,
+										level : req.user.level,
+										dmslevel : dmslevellist,
+										dmsfiles : files
+										});
+				        			}else{
+				        				res1.redirect('/dmshome');
+				        			}
+
+				        			});
+
+				        			});
+				        				
+				        			});
+
+			        			  	});
+				        			
+			        			});
+                   
+        		});
+
+			}	
+		});
+	});
+
+		// ===================================
+		// View Projects =====================
+		// ===================================
+		
+		app.get('/viewproject', function(req, res1){
+			
+			const service = google.drive('v3');
+			service.files.list({
+			auth: client,
+			fields: 'nextPageToken, files(id, name, webContentLink, webViewLink, mimeType, parents)'
+		  	}, (err, res) => {
+			if (err) {
+			  console.error('The API returned an error.');
+			  throw err;
+			}
+			const files = res.data.files;
+			if (files.length === 0) {
+			  console.log('No files found.');
+			} else {
+				
+			  console.log('Files Found!');
+			  for (const file of files) {
+				console.log(`${file.name} (${file.id})`);
+
+			  }  
+
+			connection.query("SELECT * FROM employee WHERE login_idlogin = ? ",[req.user.idlogin], function(err1, rows) {
+                    if (err1)
+                         console.log(err1);
+
+			        			var query = connection.query('SELECT * FROM employee',function(err3,rowlist){
+				        		if(err3)
+				        			console.log(err3);
+
+				        			var query = connection.query('SELECT * FROM login',function(err4,usrlist){
+				        			if(err3)
+				        				console.log(err4);
+
+				        			var query = connection.query('SELECT * FROM department',function(err4,deplist){
+				        			if(err4)
+				        				console.log(err4);
+
+				        			var query = connection.query('SELECT * FROM store',function(err5,storelist){
+				        			if(err5)
+				        				console.log(err5);
+
+				        				var query = connection.query('SELECT * FROM dmslevel WHERE login_idlogin = ? ',[req.user.idlogin],function(err6,dmslevel){
+					        			if(err6)
+					        				console.log(err6);
+
+				        				res1.render('dms_listprojects.ejs', {
+										employeelist : rowlist,
+										user : rows[0],		//  pass to template
+										allusrs : usrlist,
+										department : deplist,
+										store : storelist,
+										level : req.user.level,
+										dmslevel : dmslevel[0],
+										dmsfiles : files
+										});
+
+									});
+
+				        		});
+				        				
+				        	});
+
+			        	});
+				        			
+			    	});
+                   
+        		});  
+
+			  }
+
+		  	});
+			
+		});
+
 
 		// ====================================
 		// DMS Download Files =====================
@@ -420,14 +578,48 @@
 		});
 
 		// ==================================
-		// Create Folders ===================
+		// Create Department Folder =========
 		// ==================================
 
-		app.get('/folderstructure', function(req, res){
+		app.post('/depfolder', function(req, res){
 
-		var folderId = '1tkALk2iGiaN14zIzEWg4RX2VxRirw1Hc';
 		var fileMetadata = {
-		'name': 'Invoices2',
+		'name': req.body.foldername,
+		'mimeType': 'application/vnd.google-apps.folder'
+		
+		};
+
+		const drive = google.drive({
+			 version: 'v3',
+			  auth: client
+			});
+
+		drive.files.create({
+		  resource: fileMetadata,
+		  fields: 'id'
+		}, function (err, file) {
+		  if (err) {
+		    // Handle error
+		    console.error(err);
+		  } else {
+		    console.log('Folder Id: ', file.data.id);
+		    res.redirect('/dmsdash');
+		  }
+		});
+		
+
+		});
+
+
+		// ===============================
+		// New Project ===================
+		// ===============================
+
+		app.post('/newproject', function(req, res){
+
+		var folderId = req.body.depfolder;
+		var fileMetadata = {
+		'name': req.body.projectname,
 		parents: [folderId],
 		'mimeType': 'application/vnd.google-apps.folder'
 		
@@ -446,7 +638,9 @@
 		    // Handle error
 		    console.error(err);
 		  } else {
-		    console.log('Folder Id: ', file.id);
+		    console.log('Folder Id: ', file.data.id);
+		    res.redirect('/viewproject');
+		    
 		  }
 		});
 		

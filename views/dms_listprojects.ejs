@@ -125,10 +125,38 @@
     </div>
 
 		<div class="col-md-10" >
+                    <h3>New Project</h3>
+                    <div>
+                    <form class="form-inline" action="/newproject" method="post">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="input-group-addon"><label>New Project : </label></div>
+                        <input type="text" class="form-control"  placeholder="Name" name="projectname">
+                        <div class="input-group-addon"><label>Choose Dep Folder : </label></div>
+                        <select type="text" class="form-control"  name="depfolder">
+                            <% 
+                              if(dmsfiles.length){ 
+                              for(var i = 0;i < dmsfiles.length;i++) { 
+                                if(dmsfiles[i].mimeType == "application/vnd.google-apps.folder"){
+                                if(dmsfiles[i].parents == "0AGooUImGX-6oUk9PVA"){
+                            %>
+                            <option value="<%=dmsfiles[i].id%>"><%=dmsfiles[i].name%></option>
+                            <%
+                                   }
+                                  }
+                                }
+                              }
+                            %>
+                        </select> 
+                      </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create</button>
+                    </form>
+                    </div>
 
                     <div class="panel panel-primary filterable">
                         <div class="panel-heading">
-                            <h3 class="panel-title">Files</h3>
+                            <h3 class="panel-title">Projects</h3>
                             <div class="pull-right">
                                 <button class="btn btn-default btn-xs btn-filter"><span class="glyphicon glyphicon-filter"></span> Search</button>
                             </div>
@@ -136,17 +164,18 @@
                         <table class="table">
                             <thead>
                                 <tr class="filters">
-                                    <th><input type="text" class="form-control" placeholder="File name" disabled></th>
-                                    <th></th>
-                                    <th></th>
+                                    <th><input type="text" class="form-control" placeholder="Project name" disabled></th>
+                                    <th>Parent</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <% 
-                                            
+                                var x = 1;            
                                 if(dmsfiles.length){ 
                                 for(var j = 0;j < dmsfiles.length;j++) { 
+                                    if(dmsfiles[j].mimeType == "application/vnd.google-apps.folder"){
+                                    x = 1; 
 
                                 %>
 
@@ -155,33 +184,36 @@
                                    
                                     <td><%=dmsfiles[j].name%></td>
 
-                                    <%
-                                    if(dmsfiles[j].mimeType == "application/vnd.google-apps.folder"){
+                                    <% 
+                                            
+                                    for(var k = 0;k < dmsfiles.length;k++) { 
+                                        if(dmsfiles[j].parents == dmsfiles[k].id ){
+                                        x = 2;
                                     %>
-                                    <td>Folder</td>
-                                    <td></td>
-                                    <td></td>
-                                    <%
-                                    }else{
-                                    %>
-                                    <td></td>
-                                    <td>
-                                      <a href="<%=dmsfiles[j].webViewLink%>" target="_blank">View file</a>
-                                    </td>
-                                    <td>
-                                      <form action="/down" method="post">
-                                      <input type="hidden" name="fileid" value="<%=dmsfiles[j].id%>">
-                                      <input type="hidden" name="filename" value="<%=dmsfiles[j].name%>">
-                                      <input type="submit" value="Download">
-                                      </form>
-                                    </td>
-                                    <%
+
+                                    <td><%=dmsfiles[k].name%></td>
+
+                                    <% 
+
+                                      }
                                     }
+                                    if(x == 1){
+
                                     %>
+                                        <td>Root</td>
+                                    <%
+
+                                    }
+
+                                    %>
+
+                                    <td>Folder</td>
+                                    
 
                                 </tr>
 
-                               <%         
+                               <%     
+                                    }    
                                   }
                                 }
 
