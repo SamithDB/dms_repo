@@ -272,13 +272,18 @@ module.exports = function(app, passport) {
 				if(err2)
 					console.log(err2);
 
+				var query = connection.query("SELECT * FROM department",function(err2,deplist){
+				if(err2)
+					console.log(err2);
+
 					if(usrlist.length){
 
 						res.render('admins.ejs', {
 						user : rows[0],		//  pass to template
 						usrlist : usrlist,
 						emp : emplist,
-						level : req.user.level
+						level : req.user.level,
+						department : deplist 
 						});
 
 					}else{
@@ -286,8 +291,9 @@ module.exports = function(app, passport) {
 					}
 
 
-				});
+					});
 
+				});
 			});
 		});
 

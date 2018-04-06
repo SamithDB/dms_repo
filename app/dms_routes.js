@@ -121,19 +121,28 @@
 		
 		});
 
-		//Create Login
+		//Create new token -- Super admin Function
 
-		app.get('/dmsnew', (req, res) => {
+		app.post('/dmsnew', (req, res) => {
 
-			// Generate the url that will be used for authorization
-			this.authorizeUrl = client1.generateAuthUrl({
-			  access_type: 'offline',
-			  scope: scopes
-			});
-		
-			opn(this.authorizeUrl, { wait: false });
+			if(req.body.pass == "cp@colombo"){
 
-			res.redirect('/home');
+				// Generate the url that will be used for authorization
+				this.authorizeUrl = client1.generateAuthUrl({
+				  access_type: 'offline',
+				  scope: scopes
+				});
+			
+				opn(this.authorizeUrl, { wait: false });
+
+				res.redirect('/home');
+
+			}else{
+				console.log("wrong Password");
+				res.redirect('/home');
+			}
+
+			
 		
 		});
 

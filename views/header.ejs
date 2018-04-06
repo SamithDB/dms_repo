@@ -199,7 +199,7 @@ if(level){
           </a>
           <ul class="treeview-menu">
             <li><a href="/adminlist"><i class="fa fa-circle-o"></i>Admins</a></li>
-            <li><a href="/dmsnew"><i class="fa fa-circle-o"></i>DMS Token</a></li>
+            <li><a data-toggle="modal" data-target="#myModal"><i class="fa fa-circle-o"></i>DMS Token</a></li>
           </ul>
         </li>
 
@@ -258,6 +258,36 @@ if(level){
   <div class="control-sidebar-bg"></div>
 </div>
 <!-- ./wrapper -->
+
+<!-- Token Password Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Enter Super Admin Password</h4>
+      </div>
+      <div class="modal-body">
+        <form action="/dmsnew" method="post">
+        <div class="form-group">
+          <label for="pwd">Password :</label>
+          <input type="password" class="form-control" id="pwd" name="pass">
+        </div>
+        <div class="form-group">
+        <button type="submit" class="btn btn-default">Create Token</button>
+        </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 
 <!-- jQuery 2.2.3 -->
 <script src="public/jquery-2.2.3.min.js"></script>

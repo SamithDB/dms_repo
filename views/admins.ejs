@@ -158,14 +158,44 @@
                               <button class="btn btn-info" type="submit"><i class="material-icons"></i>View</button>
                             </form>
                           </td>
+                          <form action="/revk" role="form"  method="post">
+                          <input type="hidden" name="usrid" value=<%=usrlist[i].idlogin%> />
+                          <input type="hidden" name="empid" value=<%=usrlist[i].idemployee%> />
+                          <td><button  class="btn btn-success" >Revoke User</button></td>
+                          </form>
+                          <form action="/apprv" role="form"  method="post">
+                          <td>
+                          <input type="hidden" name="usrid" value=<%=usrlist[i].idlogin%> />
+                          </td>
+                          <td>
+                           <select class="form-control" id="sel2" name="dep">
+                               <% 
+                                if(department.length){ 
+                                for(var j = 0;j < department.length;j++) { 
+                                %>
+                            <option value="<%=department[j].iddepartment%>"><%=department[j].name%></option>
+                                <% 
+                                  }
+                                    } 
+                                %>
+                            </select>
+                          </td>
+                          <td>
+                          <select class="form-control" id="sel2" name="level">
+                            <option value="user">User</option>
+                            <option value="manager">Manager</option>
+                            <option value="admin">Admin</option>
+                          </select>
+                            </td>
+                            <td>
+                            <button type="submit" value="Grant" class="btn btn-success">Change</button>
+                            </td>
+                          </form>
                             <%
                               }
                             }
                           }
                           %>
-                        
-                        
-                        
                         
                     </tr>
                     <%      
