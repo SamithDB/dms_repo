@@ -136,7 +136,7 @@ if(level){
           </a>
         </li>
 		
-		<li class="treeview">
+		    <li class="treeview">
           <a href="#">
             <i class="fa fa-edit"></i> <span>Profile</span>
             <span class="pull-right-container">
@@ -147,6 +147,15 @@ if(level){
             <li><a href="/profile"><i class="fa fa-circle-o"></i> General Information</a></li>
             <li><a href="/profile"><i class="fa fa-circle-o"></i> Edit Information</a></li>
           </ul>
+        </li>
+
+        <li>
+          <a href="/dms">
+            <i class="fa fa-home"></i> <span>DMS</span>
+            <span class="pull-right-container">
+              <small class="label pull-right bg-green">Files</small>
+            </span>
+          </a>
         </li>
 		
 
@@ -179,6 +188,19 @@ if(level){
               <small class="label pull-right bg-red">Admin</small>
             </span>
           </a>
+        </li>
+
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-edit"></i> <span>Super Admin</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="/adminlist"><i class="fa fa-circle-o"></i>Admins</a></li>
+            <li><a href="/dmsnew"><i class="fa fa-circle-o"></i>DMS Token</a></li>
+          </ul>
         </li>
 
         <%

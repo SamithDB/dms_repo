@@ -216,9 +216,9 @@ module.exports = function(app, passport) {
 
 		});
 
-		// ===========================
-	// customers =================
-	// ===========================
+	// =======================
+	// Users =================
+	// =======================
 
 	app.get('/usrlist', function(req, res) {
 
@@ -250,6 +250,45 @@ module.exports = function(app, passport) {
 
 				});
 			})
+		});
+
+	});
+
+	// ========================
+	// Admins =================
+	// ========================
+
+	app.get('/adminlist', function(req, res) {
+
+		connection.query("SELECT * FROM employee WHERE login_idlogin = ? ",[req.user.idlogin], function(err1, rows) {
+            if (err1)
+              	console.log(err1);
+
+            connection.query("SELECT * FROM employee", function(err1, emplist) {
+            if (err1)
+              	console.log(err1);
+
+			var query = connection.query("SELECT * FROM login",function(err2,usrlist){
+				if(err2)
+					console.log(err2);
+
+					if(usrlist.length){
+
+						res.render('admins.ejs', {
+						user : rows[0],		//  pass to template
+						usrlist : usrlist,
+						emp : emplist,
+						level : req.user.level
+						});
+
+					}else{
+						res.redirect('/home');
+					}
+
+
+				});
+
+			});
 		});
 
 	});

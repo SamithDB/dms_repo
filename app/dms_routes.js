@@ -99,6 +99,12 @@
 		  'http://localhost:8080/dmscode'
 		);
 
+		const client1 = new google.auth.OAuth2(
+		  '230517522799-27ng1ovvthmq1hnfhrtqsjoqpt0pdk32.apps.googleusercontent.com',
+		  'c7YPB0E9JwwAY35POsSN72BT',
+		  'http://localhost:8080/newtoken'
+		);
+
 		
 		
 		app.get('/dms', (req, res) => {
@@ -114,6 +120,24 @@
 			res.redirect('/home');
 		
 		});
+
+		//Create Login
+
+		app.get('/dmsnew', (req, res) => {
+
+			// Generate the url that will be used for authorization
+			this.authorizeUrl = client1.generateAuthUrl({
+			  access_type: 'offline',
+			  scope: scopes
+			});
+		
+			opn(this.authorizeUrl, { wait: false });
+
+			res.redirect('/home');
+		
+		});
+
+		//Token Refresh Code
 
 		app.get('/refresh', (req, res) => {
 
@@ -138,23 +162,7 @@
 				fs.readFile(TOKEN_PATH, function(err, token) {
 				if (err) {
 
-				//getNewToken(client, callback);
-				const code = req.query.code;
-		  		console.log("code----------"+code);
-
-		  		client.getToken(code, (err, tokens) => {
-				if (err) {
-			  	console.error('Error getting oAuth tokens:');
-			  	throw err;
-				}else{
-
-				storeToken(tokens);
-				console.log("Saved-------------- "+tokens);
-				
-			}
-		  	
-		  	});
-
+				res.redirect('/home');
 
 				} else {
 				      client.credentials = JSON.parse(token);
@@ -168,6 +176,44 @@
 			
 		});
 
+		// ==================================
+		// Create Token =====================
+		// ==================================
+		app.get('/newtoken', (req, res) => {
+
+			//getNewToken(client, callback);
+				const code = req.query.code;
+		  		console.log("code----------"+code);
+
+		  		client1.getToken(code, (err, tokens) => {
+				if (err) {
+			  	console.error('Error getting oAuth tokens:');
+			  	throw err;
+				}else{
+
+				storeToken(tokens);
+				console.log("Saved-------------- "+tokens);
+				res.redirect('/home');
+
+				}
+		  	
+		  	});
+
+			
+		});
+
+		// Save the token
+		function storeToken(token) {
+				try {
+				    fs.mkdirSync(TOKEN_DIR);
+				  } catch (err) {
+				    if (err.code != 'EEXIST') {
+				      throw err;
+				    }
+				  }
+				  fs.writeFile(TOKEN_PATH, JSON.stringify(token));
+				  console.log('Token stored to ' + TOKEN_PATH);
+		}
 
 		// ====================================
 		// DMS List Files =====================
@@ -646,23 +692,10 @@
 		
 
 		});
-
-
 	
 	}
 
 
-	function storeToken(token) {
-				try {
-				    fs.mkdirSync(TOKEN_DIR);
-				  } catch (err) {
-				    if (err.code != 'EEXIST') {
-				      throw err;
-				    }
-				  }
-				  fs.writeFile(TOKEN_PATH, JSON.stringify(token));
-				  console.log('Token stored to ' + TOKEN_PATH);
-	}
 
 	// route middleware to make sure
 	function isLoggedIn(req, res, next) {
