@@ -5,6 +5,7 @@
 	var connection = mysql.createConnection(dbconfig.connection);
 	var cookieParser = require('cookie-parser');
 	const fileUpload = require('express-fileupload');
+	
 		
 	connection.query('USE ' + dbconfig.database);
 
@@ -84,27 +85,28 @@
 
 		// [START main_body]
 		const google = require('googleapis');
+        const OAuth2 = google.auth.OAuth2;
 		const express = require('express');
 		const opn = require('opn');
 		const path = require('path');
 		const fs = require('fs');
 		const os = require('os');
+		
 
 		const scopes = ['https://www.googleapis.com/auth/drive'];
 
 		// Create an oAuth2 client to authorize the API call
-		const client = new google.auth.OAuth2(
+		const client = new OAuth2(
 		  '230517522799-27ng1ovvthmq1hnfhrtqsjoqpt0pdk32.apps.googleusercontent.com',
 		  'c7YPB0E9JwwAY35POsSN72BT',
 		  'http://localhost:8080/dmscode'
 		);
 
-		const client1 = new google.auth.OAuth2(
+		const client1 = new OAuth2(
 		  '230517522799-27ng1ovvthmq1hnfhrtqsjoqpt0pdk32.apps.googleusercontent.com',
 		  'c7YPB0E9JwwAY35POsSN72BT',
 		  'http://localhost:8080/newtoken'
 		);
-
 		
 		
 		app.get('/dms', (req, res) => {
