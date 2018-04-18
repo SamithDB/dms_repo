@@ -98,13 +98,13 @@
 		const client2 = new OAuth2(
 		  '230517522799-27ng1ovvthmq1hnfhrtqsjoqpt0pdk32.apps.googleusercontent.com',
 		  'c7YPB0E9JwwAY35POsSN72BT',
-		  'http://localhost:8080/dmscode'
+		  http://cloudhub.realmau5.com/dmscode
 		);
 
 		const client1 = new OAuth2(
 		  '230517522799-27ng1ovvthmq1hnfhrtqsjoqpt0pdk32.apps.googleusercontent.com',
 		  'c7YPB0E9JwwAY35POsSN72BT',
-		  'http://localhost:8080/newtoken'
+		  'http://cloudhub.realmau5.com/newtoken'
 		);
 		
 		
