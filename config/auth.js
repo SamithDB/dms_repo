@@ -6,7 +6,7 @@ module.exports = {
     'googleAuth' : {
         'clientID'      : '230517522799-27ng1ovvthmq1hnfhrtqsjoqpt0pdk32.apps.googleusercontent.com',
         'clientSecret'  : 'c7YPB0E9JwwAY35POsSN72BT',
-        'callbackURL'   : 'http://localhost:8080/auth/google/callback'
+        'callbackURL'   : 'http://cloudhub.realmau5.com/auth/google/callback'
     }
 
 };
