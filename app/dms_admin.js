@@ -10,9 +10,9 @@
 	connection.query('USE ' + dbconfig.database);
 
 	
-		const google = require('googleapis');
+		const {google} = require('googleapis');
 		const express = require('express');
-		const opn = require('opn');
+		//const opn = require('opn');
 		const path = require('path');
 		const fs = require('fs');
 		const os = require('os');

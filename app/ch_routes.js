@@ -18,7 +18,15 @@
 	// HOME PAGE (with login links) ========
 	// =====================================
 	app.get('/', function(req, res) {
-		res.render('index.ejs'); // load the index.ejs file
+		if(req.user){
+			res.redirect('/home');
+		}else{
+			if(req.session.gclient){
+			req.session.gclient = null;
+			} //For DMS
+			res.render('index.ejs'); // load the index.ejs file	
+		}
+		
 	});
 
 	// =====================================
@@ -427,6 +435,9 @@
 	// LOGOUT ==============================
 	// =====================================
 	app.get('/logout', function(req, res) {
+		if(req.session.gclient){
+			req.session.gclient = null;
+		}
 		req.logout();
 		res.redirect('/');
 	});

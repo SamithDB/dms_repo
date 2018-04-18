@@ -135,14 +135,13 @@
                         <div class="input-group-addon"><label>Choose Dep Folder : </label></div>
                         <select type="text" class="form-control"  name="depfolder">
                             <% 
-                              if(dmsfiles.length){ 
-                              for(var i = 0;i < dmsfiles.length;i++) { 
-                                if(dmsfiles[i].mimeType == "application/vnd.google-apps.folder"){
-                                if(dmsfiles[i].parents == "0AGooUImGX-6oUk9PVA"){
+                              if(depfolders.length){ 
+                              for(var i = 0;i < depfolders.length;i++) { 
+                                if(depfolders[i].mimeType == "application/vnd.google-apps.folder"){
                             %>
-                            <option value="<%=dmsfiles[i].id%>"><%=dmsfiles[i].name%></option>
+                            <option value="<%=depfolders[i].id%>"><%=depfolders[i].name%></option>
                             <%
-                                   }
+                                   
                                   }
                                 }
                               }

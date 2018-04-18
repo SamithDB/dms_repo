@@ -84,10 +84,9 @@
 		'use strict';
 
 		// [START main_body]
-		const google = require('googleapis');
+		const {google} = require('googleapis');
         const OAuth2 = google.auth.OAuth2;
 		const express = require('express');
-		const opn = require('opn');
 		const path = require('path');
 		const fs = require('fs');
 		const os = require('os');
@@ -96,7 +95,7 @@
 		const scopes = ['https://www.googleapis.com/auth/drive'];
 
 		// Create an oAuth2 client to authorize the API call
-		const client = new OAuth2(
+		const client2 = new OAuth2(
 		  '230517522799-27ng1ovvthmq1hnfhrtqsjoqpt0pdk32.apps.googleusercontent.com',
 		  'c7YPB0E9JwwAY35POsSN72BT',
 		  'http://localhost:8080/dmscode'
@@ -111,15 +110,19 @@
 		
 		app.get('/dms', (req, res) => {
 
-			// Generate the url that will be used for authorization
-			this.authorizeUrl = client.generateAuthUrl({
-			  access_type: 'offline',
-			  scope: scopes
-			});
-		
-			opn(this.authorizeUrl, { wait: false });
+			if(req.session.gclient ==  null){
+				// Generate the url that will be used for authorization
+				this.authorizeUrl = client2.generateAuthUrl({
+			 	 access_type: 'offline',
+			 	scope: scopes
+				});
 
-			res.redirect('/home');
+				res.redirect(this.authorizeUrl);
+				
+			}else{
+			
+				res.redirect('/dmshome');
+			}
 		
 		});
 
@@ -134,10 +137,8 @@
 				  access_type: 'offline',
 				  scope: scopes
 				});
-			
-				opn(this.authorizeUrl, { wait: false });
 
-				res.redirect('/home');
+				res.redirect(this.authorizeUrl);
 
 			}else{
 				console.log("wrong Password");
@@ -176,10 +177,11 @@
 				res.redirect('/home');
 
 				} else {
-				      client.credentials = JSON.parse(token);
+				      client2.credentials = JSON.parse(token);
 				      //callback(client);
 				       console.log("----------------token found---------------------");
-				      console.log(client.credentials);
+				      console.log(client2.credentials);
+				      req.session.gclient = client2;
 				      res.redirect('/dmshome');
 				}
 			});
@@ -242,7 +244,7 @@
 			
 			const service = google.drive('v3');
 			service.files.list({
-			auth: client,
+			auth: client2,
 			fields: 'nextPageToken, files(id, name, webContentLink, webViewLink, mimeType, parents)'
 		  	}, (err, res) => {
 			if (err) {
@@ -323,8 +325,8 @@
 
 		const service = google.drive('v3');
 			service.files.list({
-			auth: client,
-			parents: "root",
+			auth: client2,
+			q: "'root' in parents",
 			fields: 'nextPageToken, files(id, name, webContentLink, webViewLink, mimeType, parents)'
 		  	}, (err, res) => {
 			if (err) {
@@ -400,27 +402,43 @@
 			
 			const service = google.drive('v3');
 			service.files.list({
-			auth: client,
+			auth: client2,
 			fields: 'nextPageToken, files(id, name, webContentLink, webViewLink, mimeType, parents)'
 		  	}, (err, res) => {
 			if (err) {
 			  console.error('The API returned an error.');
 			  throw err;
 			}
-			const files = res.data.files;
-			if (files.length === 0) {
-			  console.log('No files found.');
-			} else {
-				
-			  console.log('Files Found!');
-			  for (const file of files) {
-				console.log(`${file.name} (${file.id})`);
 
-			  }  
+				const service = google.drive('v3');
+				service.files.list({
+				auth: client2,
+				q: "'root' in parents",
+				fields: 'nextPageToken, files(id, name, webContentLink, webViewLink, mimeType, parents)'
+			  	}, (err2, res2) => {
 
-			connection.query("SELECT * FROM employee WHERE login_idlogin = ? ",[req.user.idlogin], function(err1, rows) {
-                    if (err1)
-                         console.log(err1);
+		  		if (err2) {
+			  		console.error('The API returned an error.');
+			  		throw err2;
+				}
+					const depfolders = res2.data.files;
+					if (depfolders.length === 0) {
+					  console.log('No depfolders found.');
+					} else {
+
+						const files = res.data.files;
+						if (files.length === 0) {
+						  console.log('No files found.');
+						} else {
+							
+						  console.log('Files Found!');
+						  for (const file of files) {
+						  		console.log(`${file.name} (${file.id})`);
+						 	 }  
+
+							connection.query("SELECT * FROM employee WHERE login_idlogin = ? ",[req.user.idlogin], function(err1, rows) {
+				                    if (err1)
+				                         console.log(err1);
 
 			        			var query = connection.query('SELECT * FROM employee',function(err3,rowlist){
 				        		if(err3)
@@ -450,7 +468,8 @@
 										store : storelist,
 										level : req.user.level,
 										dmslevel : dmslevel[0],
-										dmsfiles : files
+										dmsfiles : files,
+										depfolders : depfolders
 										});
 
 									});
@@ -463,9 +482,13 @@
 				        			
 			    	});
                    
-        		});  
+        		   });  
 
-			  }
+			  	 }
+
+			   }
+
+			  });
 
 		  	});
 			
@@ -483,7 +506,7 @@
 
 		  	const drive = google.drive({
 			 version: 'v3',
-			  auth: client
+			  auth: client2
 			});
 
 		  	drive.files.get(
@@ -615,7 +638,7 @@
 			};
 			const drive = google.drive({
 			 version: 'v3',
-			  auth: client
+			  auth: client2
 			});
 
 			drive.files.create({
@@ -648,7 +671,7 @@
 
 		const drive = google.drive({
 			 version: 'v3',
-			  auth: client
+			  auth: client2
 			});
 
 		drive.files.create({
@@ -684,7 +707,7 @@
 
 		const drive = google.drive({
 			 version: 'v3',
-			  auth: client
+			  auth: client2
 			});
 
 		drive.files.create({

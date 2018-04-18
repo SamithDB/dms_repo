@@ -161,7 +161,7 @@ module.exports = function(passport) {
 				if (err)
 					return done(err);
 
-                if (user) {
+                if (user.length) {
 
                     if(user[0].status == "B"){
 
@@ -189,7 +189,7 @@ module.exports = function(passport) {
 
                 } else {
                     
-					return done(null, false, req.flash('loginMessage', 'You are not authorized. Please signup first')); 
+					return done(null, false); 
 					
                 }
             });

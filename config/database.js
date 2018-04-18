@@ -3,7 +3,7 @@ module.exports = {
     'connection': {
         'host': '35.186.155.24',
         'user': 'root',
-        'password': ''
+        'password': 'm8heNWI9wQRz'
     },
 	'database': 'cloudhub_base',
     'users_table': 'login'

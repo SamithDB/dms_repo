@@ -18,7 +18,7 @@ var options = {
     host: '35.186.155.24',
     port: 3306,
     user: 'root',
-    password: '',
+    password: 'm8heNWI9wQRz',
     database: 'cloudhub_base'
 };
  
