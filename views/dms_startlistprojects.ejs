@@ -1,0 +1,123 @@
+<!-- views/profile.ejs -->
+<!doctype html>
+<html lang="en" >
+<head>
+	<title>View</title>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.0.6/sweetalert2.all.js"></script>
+
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+	<script>
+	  function resizeIframe(obj) 
+    {
+		obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+	  }
+	</script>
+
+  <script src="https://npmcdn.com/js-alert/dist/jsalert.min.js"></script>
+    <style>
+      body {
+        width: 1px;
+        min-width: 100%;
+        *width: 100%;
+        background-color: #ECEFF1;
+        padding-bottom:60px;  
+        padding-top: 60px;
+      }
+
+    </style>
+
+    <style type="text/css">
+    .filterable {
+    margin-top: 15px;
+    }
+    .filterable .panel-heading .pull-right {
+        margin-top: -20px;
+    }
+    .filterable .filters input[disabled] {
+        background-color: transparent;
+        border: none;
+        cursor: auto;
+        box-shadow: none;
+        padding: 0;
+        height: auto;
+    }
+    .filterable .filters input[disabled]::-webkit-input-placeholder {
+        color: #333;
+    }
+    .filterable .filters input[disabled]::-moz-placeholder {
+        color: #333;
+    }
+    .filterable .filters input[disabled]:-ms-input-placeholder {
+        color: #333;
+    }
+
+  </style>
+
+  </head>
+<body>
+
+<div class="bs-example">
+     <%- include dms_header.ejs %>
+</div>
+
+<div class="container">
+
+	<div class="row">
+
+    <div class="col-md-2" >
+    
+    </div>
+
+
+		<div class="col-md-10" >
+                    
+
+
+                    <h3>New Project</h3>
+
+                    <form class="form-inline" action="/viewproject" method="post">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="input-group-addon"><label>Choose Department for new project </label></div>
+                        <div class="input-group-addon"><label>Dep Folder : </label></div>
+                        <select type="text" class="form-control"  name="depfolder" id="depfolder">
+                            <% 
+                              if(depfolders.length){ 
+                              for(var i = 0;i < depfolders.length;i++) { 
+                                if(depfolders[i].mimeType == "application/vnd.google-apps.folder"){
+
+                            %>
+                            <option value="<%=depfolders[i].id%>"><%=depfolders[i].name%></option>
+                            <%
+                                    
+                                  }
+                                }
+                              }
+                            %>
+                        </select> 
+                        
+                      </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Choose</button>
+                    </form>
+
+                   
+
+		</div>
+		
+	</div>
+
+</div>
+	
+
+</body>
+
+</html>

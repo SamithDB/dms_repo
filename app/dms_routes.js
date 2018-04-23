@@ -98,7 +98,7 @@
 		const client2 = new OAuth2(
 		  '230517522799-27ng1ovvthmq1hnfhrtqsjoqpt0pdk32.apps.googleusercontent.com',
 		  'c7YPB0E9JwwAY35POsSN72BT',
-		  http://cloudhub.realmau5.com/dmscode
+		  'http://cloudhub.realmau5.com/dmscode'
 		);
 
 		const client1 = new OAuth2(
@@ -398,8 +398,103 @@
 		// View Projects =====================
 		// ===================================
 		
-		app.get('/viewproject', function(req, res1){
+		app.get('/viewprojectdep', function(req, res1){ //use to choode the department
 			
+			const service = google.drive('v3');
+			service.files.list({
+			auth: client2,
+			fields: 'nextPageToken, files(id, name, webContentLink, webViewLink, mimeType, parents)'
+		  	}, (err, res) => {
+			if (err) {
+			  console.error('The API returned an error.');
+			  throw err;
+			}
+
+				const service = google.drive('v3');
+				service.files.list({
+				auth: client2,
+				q: "'root' in parents",
+				fields: 'nextPageToken, files(id, name, webContentLink, webViewLink, mimeType, parents)'
+			  	}, (err2, res2) => {
+
+		  		if (err2) {
+			  		console.error('The API returned an error.');
+			  		throw err2;
+				}
+					const depfolders = res2.data.files;
+					if (depfolders.length === 0) {
+					  console.log('No depfolders found.');
+					} else {
+						console.log('Dep Found!');
+						const files = res.data.files;
+						if (files.length === 0) {
+						  console.log('No files found.');
+						} else {
+							
+						  console.log('Files Found!');
+
+							connection.query("SELECT * FROM employee WHERE login_idlogin = ? ",[req.user.idlogin], function(err1, rows) {
+				                    if (err1)
+				                         console.log(err1);
+
+			        			var query = connection.query('SELECT * FROM employee',function(err3,rowlist){
+				        		if(err3)
+				        			console.log(err3);
+
+				        			var query = connection.query('SELECT * FROM login',function(err4,usrlist){
+				        			if(err3)
+				        				console.log(err4);
+
+				        			var query = connection.query('SELECT * FROM department',function(err4,deplist){
+				        			if(err4)
+				        				console.log(err4);
+
+				        			var query = connection.query('SELECT * FROM store',function(err5,storelist){
+				        			if(err5)
+				        				console.log(err5);
+
+				        				var query = connection.query('SELECT * FROM dmslevel WHERE login_idlogin = ? ',[req.user.idlogin],function(err6,dmslevel){
+					        			if(err6)
+					        				console.log(err6);
+
+				        				res1.render('dms_startlistprojects.ejs', {
+										employeelist : rowlist,
+										user : rows[0],		//  pass to template
+										allusrs : usrlist,
+										department : deplist,
+										store : storelist,
+										level : req.user.level,
+										dmslevel : dmslevel[0],
+										dmsfiles : files,
+										depfolders : depfolders
+										});
+
+									});
+
+				        		});
+				        				
+				        	});
+
+			        	});
+				        			
+			    	});
+                   
+        		   });  
+
+			  	 }
+
+			   }
+
+			  });
+
+		  	});
+			
+		});
+
+		app.post('/viewproject', function(req, res1){
+
+			var projectparent = req.body.depfolder;
+			console.log(projectparent);
 			const service = google.drive('v3');
 			service.files.list({
 			auth: client2,
@@ -469,6 +564,104 @@
 										level : req.user.level,
 										dmslevel : dmslevel[0],
 										dmsfiles : files,
+										depfolders : depfolders,
+										projectdep : projectparent
+										});
+
+									});
+
+				        		});
+				        				
+				        	});
+
+			        	});
+				        			
+			    	});
+                   
+        		   });  
+
+			  	 }
+
+			   }
+
+			  });
+
+		  	});
+			
+		});
+
+		// ===================================
+		// View sections =====================
+		// ===================================
+		
+		app.get('/viewsec', function(req, res1){
+			
+			const service = google.drive('v3');
+			service.files.list({
+			auth: client2,
+			fields: 'nextPageToken, files(id, name, webContentLink, webViewLink, mimeType, parents)'
+		  	}, (err, res) => {
+			if (err) {
+			  console.error('The API returned an error.');
+			  throw err;
+			}
+
+				const service = google.drive('v3');
+				service.files.list({
+				auth: client2,
+				q: "'root' in parents",
+				fields: 'nextPageToken, files(id, name, webContentLink, webViewLink, mimeType, parents)'
+			  	}, (err2, res2) => {
+
+		  		if (err2) {
+			  		console.error('The API returned an error.');
+			  		throw err2;
+				}
+					const depfolders = res2.data.files;
+					if (depfolders.length === 0) {
+					  console.log('No depfolders found.');
+					} else {
+
+						const files = res.data.files;
+						if (files.length === 0) {
+						  console.log('No files found.');
+						} else {
+							
+						  console.log('Files Found!'); 
+
+							connection.query("SELECT * FROM employee WHERE login_idlogin = ? ",[req.user.idlogin], function(err1, rows) {
+				                    if (err1)
+				                         console.log(err1);
+
+			        			var query = connection.query('SELECT * FROM employee',function(err3,rowlist){
+				        		if(err3)
+				        			console.log(err3);
+
+				        			var query = connection.query('SELECT * FROM login',function(err4,usrlist){
+				        			if(err3)
+				        				console.log(err4);
+
+				        			var query = connection.query('SELECT * FROM department',function(err4,deplist){
+				        			if(err4)
+				        				console.log(err4);
+
+				        			var query = connection.query('SELECT * FROM store',function(err5,storelist){
+				        			if(err5)
+				        				console.log(err5);
+
+				        				var query = connection.query('SELECT * FROM dmslevel WHERE login_idlogin = ? ',[req.user.idlogin],function(err6,dmslevel){
+					        			if(err6)
+					        				console.log(err6);
+
+				        				res1.render('dms_sections.ejs', {
+										employeelist : rowlist,
+										user : rows[0],		//  pass to template
+										allusrs : usrlist,
+										department : deplist,
+										store : storelist,
+										level : req.user.level,
+										dmslevel : dmslevel[0],
+										dmsfiles : files,
 										depfolders : depfolders
 										});
 
@@ -502,7 +695,7 @@
 		app.post('/down', function(req, res){
 
 			const fileId = req.body.fileid;
-		  	const dest = fs.createWriteStream(`/Users/public/`+req.body.filename);
+		  	const dest = fs.createWriteStream(req.body.filename);
 
 		  	const drive = google.drive({
 			 version: 'v3',
@@ -690,6 +883,7 @@
 
 		});
 
+		
 
 		// ===============================
 		// New Project ===================
@@ -697,9 +891,21 @@
 
 		app.post('/newproject', function(req, res){
 
-		var folderId = req.body.depfolder;
+		var name = req.body.projectname;
+		var dep = req.body.depid;
+		var sec = req.body.secid;
+		var st = req.body.st;
+
+		console.log(name);
+		console.log(dep);
+		console.log(sec);
+		console.log(st);
+
+		if(st == "la_1"){ //Legal Division - Lands
+
+			var folderId = sec;
 		var fileMetadata = {
-		'name': req.body.projectname,
+		'name': name,
 		parents: [folderId],
 		'mimeType': 'application/vnd.google-apps.folder'
 		
@@ -719,13 +925,69 @@
 		    console.error(err);
 		  } else {
 		    console.log('Folder Id: ', file.data.id);
-		    res.redirect('/viewproject');
+		    res.redirect('/viewprojectdep');
+		    
+		  }
+		});
+
+		}else if(st == "la_2"){ //Legal Division - Apartments
+
+		}else if(st == "su"){ //Survey Division
+
+		}else if( st == "d_1"){ //Development Division - Lands
+
+		}else if(st == "d_2"){ //Development Division - Apartments
+
+		}else if(st == "sa"){ //Sales Division - Lands
+
+		}else if(st == "ac"){ //Accounts Division
+
+		}else if(st == "rd"){ //Recovery  Division
+
+		}
+
+		
+		
+
+		});
+
+
+		// ===============================
+		// New Section ===================
+		// ===============================
+
+		app.post('/newsec', function(req, res){
+
+		var folderId = req.body.depfolder;
+		var fileMetadata = {
+		'name': req.body.secname,
+		parents: [folderId],
+		'mimeType': 'application/vnd.google-apps.folder'
+		
+		};
+
+		const drive = google.drive({
+			 version: 'v3',
+			  auth: client2
+			});
+
+		drive.files.create({
+		  resource: fileMetadata,
+		  fields: 'id'
+		}, function (err, file) {
+		  if (err) {
+		    // Handle error
+		    console.error(err);
+		  } else {
+		    console.log('Folder Id: ', file.data.id);
+		    res.redirect('/viewsec');
 		    
 		  }
 		});
 		
 
 		});
+
 	
 	}
 

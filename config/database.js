@@ -1,9 +1,9 @@
 // config/database.js
 module.exports = {
     'connection': {
-        'host': '35.186.155.24',
+        'host': 'localhost',
         'user': 'root',
-        'password': 'm8heNWI9wQRz'
+        'password': 'cloudhub@123'
     },
 	'database': 'cloudhub_base',
     'users_table': 'login'
