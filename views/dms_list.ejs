@@ -147,6 +147,7 @@
                                             
                                 if(dmsfiles.length){ 
                                 for(var j = 0;j < dmsfiles.length;j++) { 
+                                if(dmsfiles[j].mimeType != "application/vnd.google-apps.folder"){
 
                                 %>
 
@@ -154,20 +155,13 @@
                                     
                                    
                                     <td><%=dmsfiles[j].name%></td>
+                                  
+                                    <td></td>
 
-                                    <%
-                                    if(dmsfiles[j].mimeType == "application/vnd.google-apps.folder"){
-                                    %>
-                                    <td>Folder</td>
-                                    <td></td>
-                                    <td></td>
-                                    <%
-                                    }else{
-                                    %>
-                                    <td></td>
                                     <td>
                                       <a href="<%=dmsfiles[j].webViewLink%>" target="_blank">View file</a>
                                     </td>
+
                                     <td>
                                       <form action="/down" method="post">
                                       <input type="hidden" name="fileid" value="<%=dmsfiles[j].id%>">
@@ -175,13 +169,11 @@
                                       <input type="submit" value="Download">
                                       </form>
                                     </td>
-                                    <%
-                                    }
-                                    %>
 
                                 </tr>
 
-                               <%         
+                               <%  
+                                    }       
                                   }
                                 }
 

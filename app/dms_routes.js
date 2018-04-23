@@ -901,53 +901,327 @@
 		console.log(sec);
 		console.log(st);
 
-		if(st == "la_1"){ //Legal Division - Lands
-
-			var folderId = sec;
-		var fileMetadata = {
-		'name': name,
-		parents: [folderId],
-		'mimeType': 'application/vnd.google-apps.folder'
-		
-		};
-
 		const drive = google.drive({
 			 version: 'v3',
 			  auth: client2
 			});
+		var folderId = sec;
+		var projectId;
+		var subfolderId;
 
-		drive.files.create({
-		  resource: fileMetadata,
-		  fields: 'id'
-		}, function (err, file) {
-		  if (err) {
-		    // Handle error
-		    console.error(err);
-		  } else {
-		    console.log('Folder Id: ', file.data.id);
-		    res.redirect('/viewprojectdep');
-		    
-		  }
-		});
+		var fileMetadata = {
+			'name': name,
+			parents: [folderId],
+			'mimeType': 'application/vnd.google-apps.folder'
+			};
 
+			drive.files.create({
+				resource: fileMetadata,
+				fields: 'id'
+			}, function (err, file) {
+				if (err) {
+				// Handle error
+					console.error(err);
+				} else {
+					console.log('Projects Folder Id: ', file.data.id);
+					projectId = file.data.id;
+				
+
+		if(st == "la_1"){  //Legal Division - Lands
+
+					var folarr = [ 'Extracts', 'Previous Deeds', 'Previous Plans', 'Sales Agreements', 'Power of Attorneys', 'Approval Letters', 'Approved Plans', 'Registered Deeds', 'Title Reports & Pedigrees', 'Title Certificates', 'Cadastral Maps', 'Other Documents', 'Condition Letters'  ];
+
+					for(var i = 0;i < folarr.length;i++){
+						
+						var fileMetadata = {
+						'name': folarr[i],
+						parents: [projectId],
+						'mimeType': 'application/vnd.google-apps.folder'
+						};
+
+						drive.files.create({
+						  resource: fileMetadata,
+						  fields: 'id, name'
+						}, function (err, file) {
+						  if (err) {
+						    // Handle error
+						    console.error(err);
+						  } else {
+						    console.log('Folder Id: ', file.data.id);
+						    console.log('folder name: ',  file.data.name);
+
+						    if( file.data.name == 'Approval Letters'){
+
+						    	subfolderId =  file.data.id;
+						    	console.log('sub parent: ', subfolderId);
+						    	console.log('subfolder creation...........');
+
+						    	var subfolarr = [ 'Local Authority', 'SLRDC', 'UDA', 'Environmental Authority', 'RDA', 'Fragmentation Board', 'NBRO', 'Other Approval Letters'];
+
+								for(var j = 0;j < subfolarr.length;j++){
+									
+									var fileMetadata = {
+									'name': subfolarr[j],
+									parents: [subfolderId],
+									'mimeType': 'application/vnd.google-apps.folder'
+									};
+
+									drive.files.create({
+									  resource: fileMetadata,
+									  fields: 'id'
+									}, function (err, file) {
+									  if (err) {
+									    // Handle error
+									    console.error(err);
+									  } 
+									});
+
+
+								}
+
+						    }
+
+						  }
+
+						});
+
+
+					}
+
+
+		
 		}else if(st == "la_2"){ //Legal Division - Apartments
+
+					var folarr = [ 'Extracts', 'Previous Deeds', 'Previous Plans', 'Sales Agreements', 'Power of Attorneys', 'Approval Letters', 'Approved Plans', 'Registered Deeds', 'Title Reports & Pedigrees', 'Title Certificates', 'Cadastral Maps', 'Other Documents', 'Condition Letters'  ];
+
+					for(var i = 0;i < folarr.length;i++){
+						
+						var fileMetadata = {
+						'name': folarr[i],
+						parents: [projectId],
+						'mimeType': 'application/vnd.google-apps.folder'
+						};
+
+						drive.files.create({
+						  resource: fileMetadata,
+						  fields: 'id, name'
+						}, function (err, file) {
+						  if (err) {
+						    // Handle error
+						    console.error(err);
+						  } else {
+						    console.log('Folder Id: ', file.data.id);
+						    console.log('folder name: ',  file.data.name);
+
+						    if( file.data.name == 'Approval Letters'){
+
+						    	subfolderId =  file.data.id;
+						    	console.log('sub parent: ', subfolderId);
+						    	console.log('subfolder creation...........');
+
+						    	var subfolarr = [ 'Local Authority', 'SLRDC', 'UDA', 'Environmental Authority', 'RDA', 'Fragmentation Board', 'NBRO', 'Other Approval Letters'];
+
+								for(var j = 0;j < subfolarr.length;j++){
+									
+									var fileMetadata = {
+									'name': subfolarr[j],
+									parents: [subfolderId],
+									'mimeType': 'application/vnd.google-apps.folder'
+									};
+
+									drive.files.create({
+									  resource: fileMetadata,
+									  fields: 'id'
+									}, function (err, file) {
+									  if (err) {
+									    // Handle error
+									    console.error(err);
+									  } 
+									});
+
+
+								}
+
+						    }
+
+						  }
+
+						});
+
+
+					}
+
+				
 
 		}else if(st == "su"){ //Survey Division
 
+					var folarr = [ 'Survey Plans', 'Data'];
+
+					for(var i = 0;i < folarr.length;i++){
+						
+						var fileMetadata = {
+						'name': folarr[i],
+						parents: [projectId],
+						'mimeType': 'application/vnd.google-apps.folder'
+						};
+
+						drive.files.create({
+						  resource: fileMetadata,
+						  fields: 'id, name'
+						}, function (err, file) {
+						  if (err) {
+						    // Handle error
+						    console.error(err);
+						  } else {
+						    console.log('Folder Id: ', file.data.id);
+						    console.log('folder name: ',  file.data.name);
+						  }
+
+						});
+					}
+
 		}else if( st == "d_1"){ //Development Division - Lands
+
+					var folarr = [ 'Final cost'];
+
+					for(var i = 0;i < folarr.length;i++){
+						
+						var fileMetadata = {
+						'name': folarr[i],
+						parents: [projectId],
+						'mimeType': 'application/vnd.google-apps.folder'
+						};
+
+						drive.files.create({
+						  resource: fileMetadata,
+						  fields: 'id, name'
+						}, function (err, file) {
+						  if (err) {
+						    // Handle error
+						    console.error(err);
+						  } else {
+						    console.log('Folder Id: ', file.data.id);
+						    console.log('folder name: ',  file.data.name);
+						  }
+
+						});
+					}
 
 		}else if(st == "d_2"){ //Development Division - Apartments
 
+					var folarr = [ 'Final cost'];
+
+					for(var i = 0;i < folarr.length;i++){
+						
+						var fileMetadata = {
+						'name': folarr[i],
+						parents: [projectId],
+						'mimeType': 'application/vnd.google-apps.folder'
+						};
+
+						drive.files.create({
+						  resource: fileMetadata,
+						  fields: 'id, name'
+						}, function (err, file) {
+						  if (err) {
+						    // Handle error
+						    console.error(err);
+						  } else {
+						    console.log('Folder Id: ', file.data.id);
+						    console.log('folder name: ',  file.data.name);
+						  }
+
+						});
+					}
+
 		}else if(st == "sa"){ //Sales Division - Lands
+
+					var folarr = [ 'Approved Price List', 'Stock', 'Document Files', 'Approved Plans', 'Condition Letters'];
+
+					for(var i = 0;i < folarr.length;i++){
+						
+						var fileMetadata = {
+						'name': folarr[i],
+						parents: [projectId],
+						'mimeType': 'application/vnd.google-apps.folder'
+						};
+
+						drive.files.create({
+						  resource: fileMetadata,
+						  fields: 'id, name'
+						}, function (err, file) {
+						  if (err) {
+						    // Handle error
+						    console.error(err);
+						  } else {
+						    console.log('Folder Id: ', file.data.id);
+						    console.log('folder name: ',  file.data.name);
+						  }
+
+						});
+					}
 
 		}else if(st == "ac"){ //Accounts Division
 
+					var folarr = [ 'Quick Book data and Local Files - Auto Sync'];
+
+					for(var i = 0;i < folarr.length;i++){
+						
+						var fileMetadata = {
+						'name': folarr[i],
+						parents: [projectId],
+						'mimeType': 'application/vnd.google-apps.folder'
+						};
+
+						drive.files.create({
+						  resource: fileMetadata,
+						  fields: 'id, name'
+						}, function (err, file) {
+						  if (err) {
+						    // Handle error
+						    console.error(err);
+						  } else {
+						    console.log('Folder Id: ', file.data.id);
+						    console.log('folder name: ',  file.data.name);
+						  }
+
+						});
+					}
+
 		}else if(st == "rd"){ //Recovery  Division
+
+					var folarr = [ 'All Local Files - Auto Sync' ];
+
+					for(var i = 0;i < folarr.length;i++){
+						
+						var fileMetadata = {
+						'name': folarr[i],
+						parents: [projectId],
+						'mimeType': 'application/vnd.google-apps.folder'
+						};
+
+						drive.files.create({
+						  resource: fileMetadata,
+						  fields: 'id, name'
+						}, function (err, file) {
+						  if (err) {
+						    // Handle error
+						    console.error(err);
+						  } else {
+						    console.log('Folder Id: ', file.data.id);
+						    console.log('folder name: ',  file.data.name);
+						  }
+
+						});
+					}
 
 		}
 
 		
-		
+		res.redirect('/viewprojectdep');
+		}
+
+		});
 
 		});
 
