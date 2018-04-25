@@ -125,7 +125,7 @@
                                  </div>
                                  <div class="form-group">
                                       <label for="exampleInputPassword1">Birthday</label>    
-                                      <input type="data" name="birthday2" class="form-control" ng-model="Birthday" id="exampleInputPassword1" value="<%= user.birthday %>">
+                                      <input type="date" name="birthday2" class="form-control" ng-model="Birthday" id="exampleInputPassword1" value="<%= user.birthday %>">
                                  </div>
                                  <div class="form-group" >
                                     <label for="comment">Contact Number</label>
@@ -143,7 +143,7 @@
                                     ​<label for="comment" >Description</label>
                                     <textarea name="description2" class="form-control" rows="5" id="comment"> <%= user.description %></textarea>
                                   </div>
-								  </br>
+								                  </br>
                                   <div class="form-group">
                                    <!-- Trigger the modal with a button -->
                                    <input type="hidden" name="_method" value="put" />

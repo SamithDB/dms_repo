@@ -155,7 +155,7 @@ if(level){
         </li>
 
       <%
-      if(level=="manager" || level=="admin"){
+      if(dmslevel.level=="coworker" || dmslevel.level=="head"){
       %>
 		
       <li class="header">DMS Manager Options</li>
@@ -188,7 +188,7 @@ if(level){
         <%
         }
 
-        if(level=="admin"){
+        if(dmslevel.level=="head"){
         %>
 
         <li class="header">DMS Admin Options</li>

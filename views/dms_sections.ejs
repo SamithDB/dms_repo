@@ -169,20 +169,21 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <%           
-                                if(dmsfiles.length){ 
-                                for(var j = 0;j < dmsfiles.length;j++) { 
-                                    if(dmsfiles[j].mimeType == "application/vnd.google-apps.folder"){
-                                    for(var k = 0;k < depfolders.length;k++) { 
-                                        if(dmsfiles[j].parents == depfolders[k].id ){
+                                <%  
+                                for(var k = 0;k < dmsfiles.length;k++) { 
+                                        for(var i = 0;i < depfolders.length;i++) { 
+                                        if(depfolders[i].mimeType == "application/vnd.google-apps.folder"){
+                                        if(dmsfiles[k].parents == depfolders[i].id){
+                                        if(dmsfiles[k].mimeType == "application/vnd.google-apps.folder"){
+                                        
                                 %>
 
                                 <tr>
                                     
                                    
-                                    <td><%=dmsfiles[j].name%></td>
+                                    <td><%=dmsfiles[k].name%></td>
 
-                                    <td><%=depfolders[k].name%></td>
+                                    <td><%=depfolders[i].name%></td>
 
                                     <td></td>
 
@@ -192,8 +193,8 @@
                                 </tr>
 
                                <%
-                                            }    
-                                        }
+                                         }
+                                       }
                                     }    
                                   }
                                 }

@@ -296,9 +296,9 @@
                                 if(allusrs.length){ 
                                 for(var i = 0;i < allusrs.length;i++) {
                                 if(allusrs[i].status=="B" && allusrs[i].level=="manager" ){
-                                if(dmslevel.length){ 
-                                for(var l = 0;l < dmslevel.length;l++) { 
-                                if(allusrs[i].idlogin==dmslevel[l].login_idlogin && dmslevel[l].status=="B" ){
+                                if(dmslevellist.length){ 
+                                for(var l = 0;l < dmslevellist.length;l++) { 
+                                if(allusrs[i].idlogin==dmslevellist[l].login_idlogin && dmslevellist[l].status=="B" ){
 
                                 %>
 
@@ -334,7 +334,7 @@
                                         <input type="hidden" name="usrid" value=<%=allusrs[i].idlogin%> />
                                         </td>
                                         <td>
-                                        <select class="form-control" id="sel2" name="dmslevel">
+                                        <select class="form-control" id="sel2" name="dmslevellist">
                                           <option value="coworker">Co-worker</option>
                                           <option value="editor">Editor</option>
                                           <option value="head">Department Head</option>
@@ -402,9 +402,9 @@
                                 if(allusrs.length){ 
                                 for(var i = 0;i < allusrs.length;i++) { 
                                 if(allusrs[i].status=="B" && allusrs[i].level=="user"){
-                                if(dmslevel.length){ 
-                                for(var l = 0;l < dmslevel.length;l++) { 
-                                if(allusrs[i].idlogin==dmslevel[l].login_idlogin && dmslevel[l].status=="B" ){
+                                if(dmslevellist.length){ 
+                                for(var l = 0;l < dmslevellist.length;l++) { 
+                                if(allusrs[i].idlogin==dmslevellist[l].login_idlogin && dmslevellist[l].status=="B" ){
 
                                 %>
 
@@ -507,8 +507,8 @@
                                             
                                 if(allusrs.length){ 
                                 for(var i = 0;i < allusrs.length;i++) { 
-                                for(var z = 0;z < dmslevel.length;z++) { 
-                                if(allusrs[i].idlogin==dmslevel[z].login_idlogin && dmslevel[z].status=="A"){
+                                for(var z = 0;z < dmslevellist.length;z++) { 
+                                if(allusrs[i].idlogin==dmslevellist[z].login_idlogin && dmslevellist[z].status=="A"){
 
                                 %>
 
@@ -579,9 +579,9 @@
                           if(allusrs.length){ 
                           for(var i = 0;i < allusrs.length;i++) {
                           newusr = "ok";
-                          if(dmslevel.length){ 
-                          for(var j = 0;j < dmslevel.length;j++) { 
-                          if(allusrs[i].idlogin == dmslevel[j].login_idlogin){
+                          if(dmslevellist.length){ 
+                          for(var j = 0;j < dmslevellist.length;j++) { 
+                          if(allusrs[i].idlogin == dmslevellist[j].login_idlogin){
                           newusr = "no";
                           }
                           }

@@ -187,7 +187,7 @@
 
                     <div class="panel panel-primary filterable">
                         <div class="panel-heading">
-                            <h3 class="panel-title">Projects</h3>
+                            <h3 class="panel-title">Folders</h3>
                             <div class="pull-right">
                                 <button class="btn btn-default btn-xs btn-filter"><span class="glyphicon glyphicon-filter"></span> Search</button>
                             </div>
@@ -195,19 +195,21 @@
                         <table class="table">
                             <thead>
                                 <tr class="filters">
-                                    <th><input type="text" class="form-control" placeholder="Project name" disabled></th>
-                                    <th>Parent</th>
+                                    <th><input type="text" class="form-control" placeholder="Folders" disabled></th>
+                                    <th><input type="text" class="form-control" placeholder="Path" disabled></th>
+                                    <th></th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <% 
-                                var x = 1; 
-                                    if(dmsfiles.length){ 
-                                    for(var j = 0;j < dmsfiles.length;j++) { 
-                                    if(dmsfiles[j].mimeType == "application/vnd.google-apps.folder"){    
-                                    x = 1; 
-
+                                var x; 
+                                var y;              
+                                if(dmsfiles.length){ 
+                                for(var j = 0;j < dmsfiles.length;j++) { 
+                                if(dmsfiles[j].mimeType == "application/vnd.google-apps.folder"){
+                                x = 0;
+                                y="";
                                 %>
 
                                 <tr>
@@ -215,36 +217,69 @@
                                    
                                     <td><%=dmsfiles[j].name%></td>
 
-                                    <% 
-                                            
+                                    <%
+                                    
                                     for(var k = 0;k < dmsfiles.length;k++) { 
-                                        if(dmsfiles[j].parents == dmsfiles[k].id ){
-                                        x = 2;
-                                    %>
+                                    if(dmsfiles[k].mimeType == "application/vnd.google-apps.folder"){
+                                    if(dmsfiles[j].parents == dmsfiles[k].id){
+                                    x = 1;
+                                    y = ""+dmsfiles[k].name;
 
-                                    <td><%=dmsfiles[k].name%></td>
+                                    for(var l = 0;l < dmsfiles.length;l++) { 
+                                    if(dmsfiles[l].mimeType == "application/vnd.google-apps.folder"){
+                                    if(dmsfiles[k].parents == dmsfiles[l].id){
+                                    y = dmsfiles[l].name+"/"+y;
 
-                                    <% 
+                                    for(var m = 0;m < dmsfiles.length;m++) { 
+                                    if(dmsfiles[m].mimeType == "application/vnd.google-apps.folder"){
+                                    if(dmsfiles[l].parents == dmsfiles[m].id){
+                                    y = dmsfiles[m].name+"/"+y;
+                                    
 
-                                      }
+                                            }
+                                        }
                                     }
-                                    if(x == 1){
+                                    
+
+                                            }
+                                        }
+                                    }
+                                    
+                                            }
+                                        }
+                                    }
+
+                                    if(x == 0){
 
                                     %>
-                                        <td>Root</td>
+                                  
+                                    <td>Root</td>
+
+                                    <%
+
+                                    }else if(x == 1){
+
+                                     %>
+                                  
+                                    <td><%=y %></td>
+
                                     <%
 
                                     }
 
                                     %>
 
-                                    <td>Folder</td>
-                                    
+                                    <td>
+                                      Folder
+                                    </td>
+
+                                    <td>
+                                    </td>
 
                                 </tr>
 
-                               <%     
-                                    }    
+                               <%  
+                                    }       
                                   }
                                 }
 
