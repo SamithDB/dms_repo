@@ -1089,36 +1089,7 @@
 						    console.log('Folder Id: ', file.data.id);
 						    console.log('folder name: ',  file.data.name);
 
-						    if( file.data.name == 'Approval Letters'){
-
-						    	subfolderId =  file.data.id;
-						    	console.log('sub parent: ', subfolderId);
-						    	console.log('subfolder creation...........');
-
-						    	var subfolarr = [ 'Local Authority', 'SLRDC', 'UDA', 'Environmental Authority', 'RDA', 'Fragmentation Board', 'NBRO', 'Other Approval Letters'];
-
-								for(var j = 0;j < subfolarr.length;j++){
-									
-									var fileMetadata = {
-									'name': subfolarr[j],
-									parents: [subfolderId],
-									'mimeType': 'application/vnd.google-apps.folder'
-									};
-
-									drive.files.create({
-									  resource: fileMetadata,
-									  fields: 'id'
-									}, function (err, file) {
-									  if (err) {
-									    // Handle error
-									    console.error(err);
-									  } 
-									});
-
-
-								}
-
-						    }
+						  }
 
 						  }
 
@@ -1152,36 +1123,7 @@
 						    console.log('Folder Id: ', file.data.id);
 						    console.log('folder name: ',  file.data.name);
 
-						    if( file.data.name == 'Approval Letters'){
-
-						    	subfolderId =  file.data.id;
-						    	console.log('sub parent: ', subfolderId);
-						    	console.log('subfolder creation...........');
-
-						    	var subfolarr = [ 'Local Authority', 'SLRDC', 'UDA', 'Environmental Authority', 'RDA', 'Fragmentation Board', 'NBRO', 'Other Approval Letters'];
-
-								for(var j = 0;j < subfolarr.length;j++){
-									
-									var fileMetadata = {
-									'name': subfolarr[j],
-									parents: [subfolderId],
-									'mimeType': 'application/vnd.google-apps.folder'
-									};
-
-									drive.files.create({
-									  resource: fileMetadata,
-									  fields: 'id'
-									}, function (err, file) {
-									  if (err) {
-									    // Handle error
-									    console.error(err);
-									  } 
-									});
-
-
-								}
-
-						    }
+						    
 
 						  }
 
