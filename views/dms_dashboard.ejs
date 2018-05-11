@@ -334,10 +334,11 @@
                                         <input type="hidden" name="usrid" value=<%=allusrs[i].idlogin%> />
                                         </td>
                                         <td>
-                                        <select class="form-control" id="sel2" name="dmslevellist">
-                                          <option value="coworker">Co-worker</option>
-                                          <option value="editor">Editor</option>
-                                          <option value="head">Department Head</option>
+                                        <select class="form-control" id="sel2" name="dmslevel">
+                                          <option value="<%=dmslevellist[l].level%>"><%=dmslevellist[l].level%></option>
+                                          <option value="coworker">coworker</option>
+                                          <option value="editor">editor</option>
+                                          <option value="head">head</option>
                                         </select>
                                         </td>
                                         <td>
@@ -441,9 +442,10 @@
                                         </td>
                                         <td>
                                         <select class="form-control" id="sel2" name="dmslevel">
-                                          <option value="coworker">Co-worker</option>
-                                          <option value="editor">Editor</option>
-                                          <option value="head">Department Head</option>
+                                          <option value="<%=dmslevellist[l].level%>"><%=dmslevellist[l].level %></option>
+                                          <option value="coworker">coworker</option>
+                                          <option value="editor">editor</option>
+                                          <option value="head">head</option>
                                         </select>
                                         </td>
                                         <td>

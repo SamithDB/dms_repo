@@ -402,11 +402,84 @@
 		});
 	});
 
+	// =====================================
+	// View admins in dms===================
+	// =====================================
+
+	app.post('/dmsadminlist', function(req, res) {
+
+		if(req.body.pass == "cp@colombo"){
+
+						connection.query("SELECT * FROM employee WHERE login_idlogin = ? ",[req.user.idlogin], function(err1, rows) {
+                    if (err1)
+                         console.log(err1);
+
+			        			var query = connection.query('SELECT * FROM employee',function(err3,rowlist){
+				        		if(err3)
+				        			console.log(err3);
+
+				        			var query = connection.query('SELECT * FROM login',function(err4,usrlist){
+				        			if(err3)
+				        				console.log(err4);
+
+				        			var query = connection.query('SELECT * FROM department',function(err4,deplist){
+				        			if(err4)
+				        				console.log(err4);
+
+				        			var query = connection.query('SELECT * FROM store',function(err5,storelist){
+				        			if(err5)
+				        				console.log(err5);
+
+				        			var query = connection.query('SELECT * FROM dmslevel',function(err5,dmslevellist){
+				        			if(err5)
+				        				console.log(err5);
+				        			var query = connection.query('SELECT * FROM dmslevel WHERE login_idlogin = ? ',[req.user.idlogin],function(err6,dmslevel){
+					        			if(err6)
+					        				console.log(err6);
+
+
+
+				        			if(req.user.level=="admin"){
+				        				res.render('dms_admins.ejs', {
+										employeelist : rowlist,
+										user : rows[0],		//  pass to template
+										allusrs : usrlist,
+										department : deplist,
+										store : storelist,
+										level : req.user.level,
+										dmslevel : dmslevel[0],
+										dmslevellist : dmslevellist,
+										});
+				        			}else{
+				        				res1.redirect('/dmshome');
+				        			}
+
+				        			});
+
+				        			});
+
+				        			});
+				        				
+				        			});
+
+			        			  	});
+				        			
+			        			});
+                   
+        		});
+
+			}else{
+				console.log("wrong Password");
+				res.redirect('/home');
+			}
+		
+	});
+
 		// ===================================
 		// View Projects =====================
 		// ===================================
 		
-		app.get('/viewprojectdep', function(req, res1){ //use to choode the department
+		app.get('/viewprojectdep', function(req, res1){ //use to choose the department
 			
 			const service = google.drive('v3');
 			service.files.list({
@@ -524,6 +597,20 @@
 			  		console.error('The API returned an error.');
 			  		throw err2;
 				}
+
+				const service = google.drive('v3');
+				service.files.list({
+				auth: client2,
+				q: `'${projectparent}' in parents`,
+				fields: 'nextPageToken, files(id, name, webContentLink, webViewLink, mimeType, parents)'
+			  	}, (err3, res3) => {
+
+		  		if (err3) {
+			  		console.error('The API returned an error.');
+			  		throw err3;
+				}
+
+
 					const depfolders = res2.data.files;
 					if (depfolders.length === 0) {
 					  console.log('No depfolders found.');
@@ -537,7 +624,12 @@
 						  console.log('Files Found!');
 						  for (const file of files) {
 						  		console.log(`${file.name} (${file.id})`);
-						 	 }  
+						 	 } 
+
+						 	 	const listfiles = res3.data.files;
+								if (listfiles.length === 0) {
+								  console.log('No files found.');
+								} else { 
 
 							connection.query("SELECT * FROM employee WHERE login_idlogin = ? ",[req.user.idlogin], function(err1, rows) {
 				                    if (err1)
@@ -572,6 +664,7 @@
 										level : req.user.level,
 										dmslevel : dmslevel[0],
 										dmsfiles : files,
+										dmslist : listfiles,
 										depfolders : depfolders,
 										projectdep : projectparent
 										});
@@ -591,6 +684,10 @@
 			  	 }
 
 			   }
+
+			   }
+
+			   });
 
 			  });
 
@@ -1303,6 +1400,74 @@
 		
 
 		});
+
+		// ==============================
+		// G Picker =====================
+		// ==============================
+
+		var GoogleTokenProvider = require('refresh-token').GoogleTokenProvider;
+
+		app.get('/pickerup', function(req, res) {
+
+						connection.query("SELECT * FROM employee WHERE login_idlogin = ?",[req.user.idlogin], function(err, rows) {
+	                    if (err)
+	                         console.log(err);
+
+	                    var query = connection.query('SELECT * FROM employee',function(err3,rowlist){
+				        		if(err3)
+				        			console.log(err3);
+
+				        var query = connection.query('SELECT * FROM login',function(err4,usrlist){
+				        	if(err4)
+				        		console.log(err4);
+
+				        var query = connection.query('SELECT * FROM department',function(err4,deplist){
+				        	if(err4)
+				        		console.log(err4);
+
+				        var query = connection.query('SELECT * FROM store',function(err5,storelist){
+				        	if(err5)
+				        		console.log(err5);
+
+				        var query = connection.query('SELECT * FROM dmslevel WHERE login_idlogin = ? ',[req.user.idlogin],function(err6,dmslevel){
+				        	if(err6)
+				        		console.log(err6);
+
+	                    console.log(req.session.gclient.credentials);
+ 
+						var tokenProvider = new GoogleTokenProvider({
+						    refresh_token: req.session.gclient.credentials.refresh_token, 
+						    client_id:     '230517522799-27ng1ovvthmq1hnfhrtqsjoqpt0pdk32.apps.googleusercontent.com', 
+						    client_secret: 'c7YPB0E9JwwAY35POsSN72BT'
+						  });
+						tokenProvider.getToken(function (err, newtoken) {
+						 console.log("new token---"+newtoken);
+						
+						if(dmslevel[0].status == 'B'){
+				        	res.render('picker.ejs', {
+							employeelist : rowlist,
+							user : rows[0],		//  pass to template
+							allusrs : usrlist,
+							department : deplist,
+							store : storelist,
+							level : req.user.level,
+							dmslevel : dmslevel[0],
+							token : newtoken
+							});
+				        }else{
+				        	res.redirect('/home');
+				        }
+
+	                    });
+
+						});
+				        });
+				        });
+				        });
+				    	});
+	        			});
+
+	        });
 
 	
 	}

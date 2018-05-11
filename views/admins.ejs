@@ -169,6 +169,19 @@
                           </td>
                           <td>
                            <select class="form-control" id="sel2" name="dep">
+                                          <% 
+                                            if(department.length){ 
+                                            for(var k = 0;k < department.length;k++) { 
+                                            if(department[k].iddepartment == emp[j].department_iddepartment){ 
+                                          %>
+                                          <option value="<%=department[k].iddepartment%>"><%=department[k].name%></option>
+                                          <% 
+                                                    
+                                                  
+                                                }
+                                              } 
+                                            }
+                                          %>                           
                                <% 
                                 if(department.length){ 
                                 for(var j = 0;j < department.length;j++) { 
@@ -182,9 +195,9 @@
                           </td>
                           <td>
                           <select class="form-control" id="sel2" name="level">
+                            <option value="admin">Admin</option>
                             <option value="user">User</option>
                             <option value="manager">Manager</option>
-                            <option value="admin">Admin</option>
                           </select>
                             </td>
                             <td>

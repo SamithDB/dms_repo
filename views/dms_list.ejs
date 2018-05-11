@@ -159,6 +159,10 @@
                                     <td><%=dmsfiles[j].name%></td>
 
                                     <%
+
+                                    //while (condition) {
+
+                                    //}
                                     
                                     for(var k = 0;k < dmsfiles.length;k++) { 
                                     if(dmsfiles[k].mimeType == "application/vnd.google-apps.folder"){
@@ -175,13 +179,31 @@
                                     if(dmsfiles[m].mimeType == "application/vnd.google-apps.folder"){
                                     if(dmsfiles[l].parents == dmsfiles[m].id){
                                     y = dmsfiles[m].name+"/"+y;
+
+                                    for(var n = 0;n < dmsfiles.length;n++) { 
+                                    if(dmsfiles[n].mimeType == "application/vnd.google-apps.folder"){
+                                    if(dmsfiles[m].parents == dmsfiles[n].id){
+                                    y = dmsfiles[n].name+"/"+y;
+
+                                    for(var o = 0;o < dmsfiles.length;o++) { 
+                                    if(dmsfiles[o].mimeType == "application/vnd.google-apps.folder"){
+                                    if(dmsfiles[n].parents == dmsfiles[o].id){
+                                    y = dmsfiles[o].name+"/"+y;
                                     
 
                                             }
                                         }
                                     }
-
                                     
+
+                                            }
+                                        }
+                                    }
+                                    
+
+                                            }
+                                        }
+                                    }
 
                                             }
                                         }

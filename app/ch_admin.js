@@ -134,10 +134,29 @@ module.exports = function(app, passport) {
 					console.log(err);
 				
 				} else {
-					connection.query("UPDATE employee SET department_iddepartment = ? WHERE login_idlogin = ?",[req.body.dep, newusr.usrid], function(err, rows) {
+					connection.query("UPDATE employee SET department_iddepartment = ? WHERE login_idlogin = ?",[req.body.dep, newusr.usrid], function(err, rows1) {
                     if (err)
                          console.log(err);;
                      });
+					/*
+					var mail = require('mail').Mail({ //sending emails................... 
+					host: 'smtp.gmail.com',
+					username: '',
+					password: ''
+					});
+					console.log(req.body.usrnm);
+
+					mail.message({
+					  from: 'sam@cloudpartners.biz',
+					  to: [req.body.usrnm],
+					  subject: 'Hello from CloudHub'
+					})
+					.body('Admin granted Permition to you!')
+					.send(function(err) {
+					  if (err) throw err;
+					  console.log('Sent!');
+					});
+						*/
 					console.log('Permition Granted');
 					res.redirect('/dash'); 
 					
@@ -162,7 +181,24 @@ module.exports = function(app, passport) {
 			connection.query(insertQuery,[ newusr.status, newusr.usrid ],function(err, rows) {
 				 if (err) 
 					console.log(err);
-
+			/*
+			var mail = require('mail').Mail({  //sending emails................... 
+				host: 'smtp.gmail.com',
+				username: '',
+				password: ''
+			});
+			
+			mail.message({
+			  from: 'bmsd.basnayaka@gmail.com',
+			  to: [req.body.usrnm],
+			  subject: 'Hello from CloudHub'
+			})
+			.body('Admin revoke Permition to you!')
+			.send(function(err) {
+			  if (err) throw err;
+			  console.log('Sent!');
+			});
+			*/
 				res.redirect('/home');
 				
 			})
@@ -234,12 +270,17 @@ module.exports = function(app, passport) {
 				if(err2)
 					console.log(err2);
 
+				var query = connection.query("SELECT * FROM department",function(err3,deplist){
+				if(err3)
+					console.log(err3);
+
 					if(usrlist.length){
 
 						res.render('users.ejs', {
 						user : rows[0],		//  pass to template
 						usrlist : usrlist,
 						emp : emplist,
+						deps : deplist,
 						level : req.user.level
 						});
 
@@ -247,7 +288,7 @@ module.exports = function(app, passport) {
 						res.redirect('/home');
 					}
 
-
+					});
 				});
 			})
 		});
@@ -258,44 +299,53 @@ module.exports = function(app, passport) {
 	// Admins =================
 	// ========================
 
-	app.get('/adminlist', function(req, res) {
+	app.post('/adminlist', function(req, res) {
 
-		connection.query("SELECT * FROM employee WHERE login_idlogin = ? ",[req.user.idlogin], function(err1, rows) {
-            if (err1)
-              	console.log(err1);
+		if(req.body.pass == "cp@colombo"){
 
-            connection.query("SELECT * FROM employee", function(err1, emplist) {
-            if (err1)
-              	console.log(err1);
+						connection.query("SELECT * FROM employee WHERE login_idlogin = ? ",[req.user.idlogin], function(err1, rows) {
+			            if (err1)
+			              	console.log(err1);
 
-			var query = connection.query("SELECT * FROM login",function(err2,usrlist){
-				if(err2)
-					console.log(err2);
+			            connection.query("SELECT * FROM employee", function(err1, emplist) {
+			            if (err1)
+			              	console.log(err1);
 
-				var query = connection.query("SELECT * FROM department",function(err2,deplist){
-				if(err2)
-					console.log(err2);
+						var query = connection.query("SELECT * FROM login",function(err2,usrlist){
+							if(err2)
+								console.log(err2);
 
-					if(usrlist.length){
+							var query = connection.query("SELECT * FROM department",function(err2,deplist){
+							if(err2)
+								console.log(err2);
 
-						res.render('admins.ejs', {
-						user : rows[0],		//  pass to template
-						usrlist : usrlist,
-						emp : emplist,
-						level : req.user.level,
-						department : deplist 
+								if(usrlist.length){
+
+									res.render('admins.ejs', {
+									user : rows[0],		//  pass to template
+									usrlist : usrlist,
+									emp : emplist,
+									level : req.user.level,
+									department : deplist 
+									});
+
+								}else{
+									res.redirect('/home');
+								}
+
+
+								});
+
+							});
 						});
-
-					}else{
-						res.redirect('/home');
-					}
-
-
 					});
 
-				});
-			});
-		});
+			}else{
+				console.log("wrong Password");
+				res.redirect('/home');
+			}
+
+		
 
 	});
 	

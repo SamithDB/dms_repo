@@ -161,7 +161,7 @@ if(level){
       <li class="header">DMS Manager Options</li>
 
         <li>
-          <a href="/dmsup">
+          <a href="/pickerup">
             <i class="fa fa-circle-o"></i> <span>Uploads</span>
             <span class="pull-right-container">
             </span>
@@ -194,12 +194,18 @@ if(level){
         <li class="header">DMS Admin Options</li>
 
         <li>
-          <a href="/dmsdash">
+          <a href="/dmsdash" >
             <i class="fa fa-circle-o"></i> <span>DMS Control</span>
             <span class="pull-right-container">
               <small class="label pull-right bg-red">Admin</small>
             </span>
           </a>
+        </li>
+        <li>
+          <a data-toggle="modal" data-target="#myModalsuper2">
+            <i class="fa fa-circle-o"></i><span class="pull-right-container">
+              <small class="label pull-right bg-red">Super admin</small>
+            </span>Admins</a>
         </li>
 
         <%
@@ -218,6 +224,35 @@ if(level){
 
 </div>
 <!-- ./wrapper -->
+
+<!-- admins Password Modal -->
+<div id="myModalsuper2" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Enter Super Admin Password</h4>
+      </div>
+      <div class="modal-body">
+        <form action="/dmsadminlist" method="post">
+        <div class="form-group">
+          <label for="pwd">Password :</label>
+          <input type="password" class="form-control" id="pwd" name="pass">
+        </div>
+        <div class="form-group">
+        <button type="submit" class="btn btn-default">View Admins</button>
+        </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
 
 <!-- jQuery 2.2.3 -->
 <script src="public/jquery-2.2.3.min.js"></script>

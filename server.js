@@ -21,7 +21,7 @@ var options = {
     password: 'cloudhub@123',
     database: 'cloudhub_base'
 };
- 
+
 var sessionStore = new MySQLStore(options);
 
 // configuration ===============================================================

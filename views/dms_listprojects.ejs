@@ -204,10 +204,13 @@
                             <tbody>
                                 <% 
                                 var x; 
-                                var y;              
+                                var y;   
+                                if(dmslist.length){ 
+                                for(var i = 0;i < dmslist.length;i++) {            
                                 if(dmsfiles.length){ 
                                 for(var j = 0;j < dmsfiles.length;j++) { 
                                 if(dmsfiles[j].mimeType == "application/vnd.google-apps.folder"){
+                                if(dmsfiles[j].parents == dmslist[i].id){
                                 x = 0;
                                 y="";
                                 %>
@@ -229,16 +232,6 @@
                                     if(dmsfiles[l].mimeType == "application/vnd.google-apps.folder"){
                                     if(dmsfiles[k].parents == dmsfiles[l].id){
                                     y = dmsfiles[l].name+"/"+y;
-
-                                    for(var m = 0;m < dmsfiles.length;m++) { 
-                                    if(dmsfiles[m].mimeType == "application/vnd.google-apps.folder"){
-                                    if(dmsfiles[l].parents == dmsfiles[m].id){
-                                    y = dmsfiles[m].name+"/"+y;
-                                    
-
-                                            }
-                                        }
-                                    }
                                     
 
                                             }
@@ -278,7 +271,10 @@
 
                                 </tr>
 
-                               <%  
+                               <%     
+                                        } 
+                                       } 
+                                      } 
                                     }       
                                   }
                                 }

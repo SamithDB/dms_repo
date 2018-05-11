@@ -262,7 +262,7 @@
                                     <th><input type="text" class="form-control" placeholder="UserID#" disabled></th>
                                     <th><input type="text" class="form-control" placeholder="Name" disabled></th>
                                     <th><input type="text" class="form-control" placeholder="User Email" disabled></th>
-                                    <th>
+                                    
                                     <th>
                                     <th>
                                     <th>
@@ -294,6 +294,7 @@
                                     <td><%=allusrs[i].username%></td>
                                       <form action="/revk" role="form"  method="post">
                                       <input type="hidden" name="usrid" value=<%=allusrs[i].idlogin%> />
+                                      <input type="hidden" name="usrnm" value=<%=allusrs[i].username%> />
                                       <input type="hidden" name="empid" value=<%=allusrs[i].idemployee%> />
                                       <td><button  class="btn btn-success" >Revoke User</button></td>
                                       </form>
@@ -306,8 +307,23 @@
                                           <% 
                                             if(department.length){ 
                                             for(var j = 0;j < department.length;j++) { 
+                                            for(var k = 0;k < employeelist.length;k++) {
+                                            if(allusrs[i].idlogin == employeelist[k].idemployee){
+                                            if(department[j].iddepartment == employeelist[k].department_iddepartment){ 
                                           %>
                                           <option value="<%=department[j].iddepartment%>"><%=department[j].name%></option>
+                                          <% 
+                                                    }
+                                                  }
+                                                }
+                                              } 
+                                            }
+                                          %>
+                                          <% 
+                                            if(department.length){ 
+                                            for(var k = 0;k < department.length;k++) { 
+                                          %>
+                                          <option value="<%=department[k].iddepartment%>"><%=department[k].name%></option>
                                           <% 
                                                 }
                                               } 
@@ -316,8 +332,8 @@
                                         </td>
                                         <td>
                                         <select class="form-control" id="sel2" name="level">
-                                          <option value="user">User</option>
                                           <option value="manager">Manager</option>
+                                          <option value="user">User</option>
                                           <option value="admin">Admin</option>
                                         </select>
                                         </td>
@@ -398,6 +414,7 @@
                                     <td><%=allusrs[i].username%></td>
                                       <form action="/revk" role="form"  method="post">
                                       <input type="hidden" name="usrid" value=<%=allusrs[i].idlogin%> />
+                                      <input type="hidden" name="usrnm" value=<%=allusrs[i].username%> />
                                       <input type="hidden" name="empid" value=<%=allusrs[i].idemployee%> />
                                       <td><button  class="btn btn-success" >Revoke User</button></td>
                                       </form>
@@ -407,6 +424,21 @@
                                         </td>
                                         <td>
                                         <select class="form-control" id="sel2" name="dep">
+                                           <% 
+                                            if(department.length){ 
+                                            for(var j = 0;j < department.length;j++) { 
+                                            for(var k = 0;k < employeelist.length;k++) {
+                                            if(allusrs[i].idlogin == employeelist[k].idemployee){
+                                            if(department[j].iddepartment == employeelist[k].department_iddepartment){ 
+                                          %>
+                                          <option value="<%=department[j].iddepartment%>"><%=department[j].name%></option>
+                                          <% 
+                                                    }
+                                                  }
+                                                }
+                                              } 
+                                            }
+                                          %>
                                           <% 
                                             if(department.length){ 
                                             for(var j = 0;j < department.length;j++) { 
@@ -506,6 +538,7 @@
                                       <td>
                                         <label><%=allusrs[i].username%></label>
                                         <input type="hidden" name="usrid" value=<%=allusrs[i].idlogin%> />
+                                        <input type="hidden" name="usrnm" value=<%=allusrs[i].username%> />
                                       </td>
                                     </tr>
                                     <tr>

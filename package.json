@@ -21,6 +21,7 @@
     "filereader": "^0.10.3",
     "googleapis": "^28.1.0",
     "js-alert": "^1.0.4",
+    "mail": "^0.2.3",
     "mathjs": "^3.20.2",
     "moment": "^2.19.2",
     "morgan": "^1.6.0",
@@ -33,6 +34,7 @@
     "passport-google-oauth": "^1.0.0",
     "passport-local": "^1.0.0",
     "passport-twitter": "^1.0.4",
-    "pug": "2.0.0-rc.3"
+    "pug": "2.0.0-rc.3",
+    "refresh-token": "^1.0.0"
   }
 }
